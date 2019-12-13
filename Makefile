@@ -1,7 +1,7 @@
 build:
 	docker-compose build
 install:
-	docker-compose run --rm tasker bundle
+	docker-compose run --rm tasker bundle install
 	docker-compose run --rm tasker yarn
 tasker:
 	docker-compose up tasker
