@@ -7,7 +7,7 @@ git clone
 ```
 docker-compose build
 ```
-
+```
 docker-compose run --rm tasker yarn install --check-files
 ```
 
