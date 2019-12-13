@@ -1,24 +1,26 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+```
+git clone
+```
 
-Things you may want to cover:
+```
+docker-compose build
+```
 
-* Ruby version
+docker-compose run --rm tasker yarn install --check-files
+```
 
-* System dependencies
+```
+docker-compose run --rm tasker rails webpacker:install
+```
 
-* Configuration
+```
+docker-compose run --rm tasker rails db:create
+```
 
-* Database creation
+```
+docker-compose up tasker
+```
 
-* Database initialization
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
