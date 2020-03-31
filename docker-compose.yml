@@ -1,0 +1,42 @@
+version: '3.7'
+services:
+  tasker:
+    build: .
+    tty: true
+    volumes:
+      - ./:/go/src/tasker
+    working_dir: /go/src/tasker
+    ports:
+      - "5001:5001"
+    networks:
+      - tasker_network
+  tasker_dev:
+    build:
+      context: .
+      target: builder
+    tty: true
+    volumes:
+      - ./:/go/src/tasker
+    working_dir: /go/src/tasker
+    ports:
+      - "5001:5001"
+    networks:
+      - tasker_network
+  db:
+    image: mysql:5.7
+    restart: always
+    volumes:
+      - tasker_db:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: tasker_dev
+      MYSQL_USER: tasker
+      MYSQL_PASSWORD: tasker
+    ports:
+      - "3330:3330"
+    networks:
+      - tasker_network
+volumes:
+  tasker_db:
+networks:
+  tasker_network:
