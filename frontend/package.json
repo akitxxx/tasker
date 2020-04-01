@@ -8,10 +8,15 @@
     "start": "NODE_ENV=production node server.js"
   },
   "dependencies": {
+    "@zeit/next-css": "^1.0.1",
+    "@zeit/next-sass": "^1.0.1",
+    "bootstrap": "^4.4.1",
     "express": "^4.17.1",
     "http-proxy-middleware": "^1.0.3",
     "next": "9.3.3",
+    "node-sass": "^4.13.1",
     "react": "16.13.1",
+    "react-bootstrap": "^1.0.0",
     "react-dom": "16.13.1"
   }
 }
