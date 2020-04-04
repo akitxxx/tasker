@@ -4,8 +4,8 @@ services:
     build: .
     tty: true
     volumes:
-      - ./:/go/src/tasker
-    working_dir: /go/src/tasker
+      - ./:/go/src/github.com/lelouch99v/tasker
+    working_dir: /go/src/github.com/lelouch99v/tasker
     ports:
       - "5001:5001"
     networks:
@@ -16,8 +16,8 @@ services:
       target: builder
     tty: true
     volumes:
-      - ./:/go/src/tasker
-    working_dir: /go/src/tasker
+      - ./:/go/src/github.com/lelouch99v/tasker
+    working_dir: /go/src/github.com/lelouch99v/tasker
     ports:
       - "5001:5001"
     networks:
