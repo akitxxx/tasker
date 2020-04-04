@@ -14,11 +14,7 @@ func main() {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
-	routing(e)
+	handlers.Routing(e)
 
 	e.Start(":" + port)
-}
-
-func routing(e *echo.Echo) {
-	e.GET("/", handlers.Index())
 }
