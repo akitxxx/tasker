@@ -1,20 +1,37 @@
 package main
 
 import (
-	"github.com/labstack/echo"
-	"github.com/labstack/echo/middleware"
-	"github.com/lelouch99v/tasker/handlers"
+	"fmt"
+	"log"
+	"net/http"
 )
 
-const port = "5001"
-
 func main() {
-	e := echo.New()
+	http.HandleFunc("/", health)
+	http.HandleFunc("/hello", hello)
 
-	e.Use(middleware.Logger())
-	e.Use(middleware.Recover())
+	fmt.Println("server listening...")
+	if err := http.ListenAndServe(":5010", nil); err != nil {
+		log.Fatal("ListenAndServe: ", err)
+	}
+}
 
-	handlers.Routing(e)
+func health(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/" {
+		log.Println(r.URL.Path + " is not found.")
+		errorHandler(w, r, http.StatusNotFound)
+	}
+	if r.Method == "GET" {
+		w.Write([]byte("OK"))
+	}
+}
 
-	e.Start(":" + port)
+func hello(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "GET" {
+		w.Write([]byte("hello!"))
+	}
+}
+
+func errorHandler(w http.ResponseWriter, r *http.Request, statusCode int) {
+	w.WriteHeader(statusCode)
 }
