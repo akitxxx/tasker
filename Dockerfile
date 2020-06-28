@@ -10,5 +10,5 @@ RUN cd /go/src && go get github.com/labstack/echo/... && \
 # runtime image
 FROM alpine:latest
 COPY --from=builder /go/bin/tasker /tasker
-EXPOSE 5001
+EXPOSE 5010
 ENTRYPOINT ["/tasker"]
