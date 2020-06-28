@@ -10,8 +10,9 @@ func main() {
 	http.HandleFunc("/", health)
 	http.HandleFunc("/hello", hello)
 
-	fmt.Println("server listening...")
-	if err := http.ListenAndServe(":5010", nil); err != nil {
+	port := "5010"
+	fmt.Println("server is listening on port:" + port + "...")
+	if err := http.ListenAndServe(":"+port, nil); err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
 }
