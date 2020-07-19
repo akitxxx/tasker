@@ -1,12 +1,11 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
-
-	"github.com/labstack/echo"
 )
 
-func index(c echo.Context) error {
-	str := "hello, tasker"
-	return c.JSON(http.StatusOK, str)
+func Index(w http.ResponseWriter, r *http.Request) {
+	r.ParseForm()
+	fmt.Fprintln(w, r.Form)
 }

@@ -4,15 +4,25 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+
+	"github.com/lelouch99v/tasker/handlers"
 )
 
 func main() {
-	http.HandleFunc("/", health)
-	http.HandleFunc("/hello", hello)
+	mux := http.NewServeMux()
 
-	port := "5010"
-	fmt.Println("server is listening on port:" + port + "...")
-	if err := http.ListenAndServe(":"+port, nil); err != nil {
+	mux.HandleFunc("/", health)
+	mux.HandleFunc("/hello", hello)
+	mux.HandleFunc("/index", handlers.Index)
+
+	port := ":5010"
+	server := &http.Server{
+		Addr:    port,
+		Handler: mux,
+	}
+
+	fmt.Println("server is listening on port" + port + "...")
+	if err := server.ListenAndServe(); err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
 }

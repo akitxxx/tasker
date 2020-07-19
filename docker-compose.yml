@@ -20,6 +20,8 @@ services:
     working_dir: /go/src/github.com/lelouch99v/tasker
     ports:
       - "5010:5010"
+    depends_on:
+      - db
     networks:
       - tasker_network
   db:
