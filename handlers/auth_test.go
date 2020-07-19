@@ -6,6 +6,8 @@ import (
 	"net/http/httptest"
 	"strings"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestHandleAuth(t *testing.T) {
@@ -18,16 +20,9 @@ func TestHandleAuth(t *testing.T) {
 	request, _ := http.NewRequest("POST", "/user/", jsonStr) // テストしたいハンドラ宛のリクエストを作成
 	mux.ServeHTTP(writer, request)                           // テスト対象のハンドラにリクエストを送信
 
-	if writer.Code != 200 {
-		t.Errorf("Response code is %v", writer.Code)
-	}
-
 	var user User
 	json.Unmarshal(writer.Body.Bytes(), &user)
-	if user.Email != "test@test.com" {
-		t.Errorf("Email is %v", user.Email)
-	}
-	if user.Password != "test" {
-		t.Errorf("Password is %v", user.Password)
-	}
+	assert.Equal(t, writer.Code, 200)
+	assert.Equal(t, "test@test.com", user.Email)
+	assert.Equal(t, "test", user.Password)
 }
