@@ -12,8 +12,8 @@ func main() {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("/", health)
-	mux.HandleFunc("/hello", hello)
 	mux.HandleFunc("/index", handlers.Index)
+	mux.HandleFunc("/auth", handlers.HandleAuth)
 
 	port := ":5010"
 	server := &http.Server{
@@ -34,12 +34,6 @@ func health(w http.ResponseWriter, r *http.Request) {
 	}
 	if r.Method == "GET" {
 		w.Write([]byte("OK"))
-	}
-}
-
-func hello(w http.ResponseWriter, r *http.Request) {
-	if r.Method == "GET" {
-		w.Write([]byte("hello!"))
 	}
 }
 
