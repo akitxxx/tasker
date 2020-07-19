@@ -12,7 +12,6 @@ func main() {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("/", health)
-	mux.HandleFunc("/index", handlers.Index)
 	mux.HandleFunc("/auth", handlers.HandleAuth)
 
 	port := ":5010"
