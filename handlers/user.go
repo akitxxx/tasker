@@ -25,7 +25,7 @@ func GetUserList(w http.ResponseWriter, r *http.Request) {
 	renderResponse(w, users, http.StatusOK)
 }
 
-func GetUserById(w http.ResponseWriter, r *http.Request) {
+func FindUserById(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		http.NotFound(w, r)
 		return

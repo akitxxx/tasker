@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-type User struct {
+type Auth struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
 }
@@ -18,13 +18,13 @@ func HandleAuth(w http.ResponseWriter, r *http.Request) {
 		fmt.Printf("error:%v", err)
 	}
 
-	var user User
-	err = json.Unmarshal(body, &user)
+	var auth Auth
+	err = json.Unmarshal(body, &auth)
 	if err != nil {
 		fmt.Printf("error:%v", err)
 	}
 
-	res, err := json.Marshal(user)
+	res, err := json.Marshal(auth)
 	if err != nil {
 		fmt.Printf("error:%v", err)
 	}

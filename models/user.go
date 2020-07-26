@@ -6,15 +6,15 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-var db, _ = sql.Open("mysql", "root:root@tcp(tasker_dev_db)/tasker_dev")
-
 type User struct {
-	ID       uint64
-	Email    string
-	Password string
+	ID       uint64 `json:"id"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
 }
 
 func SelectUserList() (*[]User, error) {
+	var db, _ = sql.Open("mysql", "root:root@tcp(tasker_dev_db)/tasker_dev")
+
 	sql := "select id, email from users;"
 	stmt, err := db.Prepare(sql)
 	if err != nil {
@@ -40,6 +40,8 @@ func SelectUserList() (*[]User, error) {
 }
 
 func FindById(id uint64) (*User, error) {
+	var db, _ = sql.Open("mysql", "root:root@tcp(tasker_dev_db)/tasker_dev")
+
 	sql := "select id, email from users where id = ?;"
 	stmt, err := db.Prepare(sql)
 	if err != nil {
