@@ -7,7 +7,7 @@ services:
       - ./:/go/src/github.com/lelouch99v/tasker
     working_dir: /go/src/github.com/lelouch99v/tasker
     ports:
-      - "5001:5001"
+      - "5005:5005"
     networks:
       - tasker_network
   tasker_dev:
@@ -19,7 +19,9 @@ services:
       - ./:/go/src/github.com/lelouch99v/tasker
     working_dir: /go/src/github.com/lelouch99v/tasker
     ports:
-      - "5001:5001"
+      - "5010:5010"
+    depends_on:
+      - db
     networks:
       - tasker_network
   db:
