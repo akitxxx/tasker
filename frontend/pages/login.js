@@ -30,9 +30,10 @@ const Login = () => {
         email: email,
         password: password
       });
-      alert(`ログイン成功\nemail: ${res.data.email}\npassword: ${res.data.password}`);
+      alert(`ログイン成功\nemail: ${res.data}\n`);
+      window.location.href = '/task-board';
     } catch (err) {
-      alert('ログイン失敗');
+      alert('ログイン失敗\n' + err);
     }
   };
 

@@ -56,3 +56,21 @@ func FindById(id uint64) (*User, error) {
 
 	return &user, nil
 }
+
+func FindByEmailAndPassword(email string, password string) (*User, error) {
+	var db, _ = sql.Open("mysql", "root:root@tcp(tasker_dev_db)/tasker_dev")
+
+	sql := "select id, email from users where email = ? and password = ?;"
+	stmt, err := db.Prepare(sql)
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+
+	user := User{}
+	if err := stmt.QueryRow(email, password).Scan(&user.ID, &user.Email); err != nil {
+		return nil, err
+	}
+
+	return &user, nil
+}

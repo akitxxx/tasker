@@ -2,9 +2,10 @@ package handlers
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
+
+	"github.com/lelouch99v/tasker/models"
 )
 
 type Auth struct {
@@ -13,22 +14,33 @@ type Auth struct {
 }
 
 func HandleAuth(w http.ResponseWriter, r *http.Request) {
-	body, err := ioutil.ReadAll(r.Body)
-	if err != nil {
-		fmt.Printf("error:%v", err)
+	if r.Method != http.MethodPost {
+		http.NotFound(w, r)
+		return
 	}
 
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		renderError(w, err, http.StatusInternalServerError)
+		return
+	}
 	var auth Auth
 	err = json.Unmarshal(body, &auth)
 	if err != nil {
-		fmt.Printf("error:%v", err)
+		renderError(w, err, http.StatusInternalServerError)
+		return
 	}
 
-	res, err := json.Marshal(auth)
+	user, err := models.FindByEmailAndPassword(auth.Email, auth.Password)
 	if err != nil {
-		fmt.Printf("error:%v", err)
+		renderError(w, err, http.StatusInternalServerError)
+		return
 	}
 
-	w.Header().Set("Content-Type", "application/json;charset=UTF-8")
-	w.Write(res)
+	cookie := &http.Cookie{
+		Name:  "ID",
+		Value: user.Email,
+	}
+	http.SetCookie(w, cookie)
+	renderResponse(w, auth.Email, http.StatusOK)
 }

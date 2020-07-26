@@ -1,6 +1,6 @@
 create table users (
   id integer primary key auto_increment,
-  email varchar(255) not null,
+  email varchar(255) unique not null,
   password varchar(100) not null
 );
 
