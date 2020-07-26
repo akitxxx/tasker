@@ -13,6 +13,7 @@ func main() {
 
 	mux.HandleFunc("/", health)
 	mux.HandleFunc("/auth", handlers.HandleAuth)
+	mux.HandleFunc("/user", handlers.GetUserList)
 	mux.HandleFunc("/user/", handlers.GetUserById)
 
 	port := ":5010"

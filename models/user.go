@@ -14,8 +14,29 @@ type User struct {
 	Password string
 }
 
-func selectUserList() {
+func SelectUserList() (*[]User, error) {
+	sql := "select id, email from users;"
+	stmt, err := db.Prepare(sql)
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
 
+	var users []User
+	rows, err := stmt.Query()
+	if err != nil {
+		return nil, err
+	}
+
+	for rows.Next() {
+		u := User{}
+		if err := rows.Scan(&u.ID, &u.Email); err != nil {
+			return nil, err
+		}
+		users = append(users, u)
+	}
+
+	return &users, nil
 }
 
 func FindById(id uint64) (*User, error) {

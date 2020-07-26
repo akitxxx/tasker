@@ -9,6 +9,22 @@ import (
 	"github.com/lelouch99v/tasker/models"
 )
 
+func GetUserList(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.NotFound(w, r)
+		return
+	}
+
+	users, err := models.SelectUserList()
+	if err != nil {
+		log.Println(err)
+		renderError(w, err, http.StatusBadRequest)
+		return
+	}
+
+	renderResponse(w, users, http.StatusOK)
+}
+
 func GetUserById(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		http.NotFound(w, r)
