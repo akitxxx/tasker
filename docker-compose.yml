@@ -26,6 +26,7 @@ services:
       - tasker_network
   db:
     image: mysql:5.7
+    container_name: tasker_dev_db
     restart: always
     volumes:
       - tasker_db:/var/lib/mysql
