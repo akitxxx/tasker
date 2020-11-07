@@ -3,7 +3,7 @@ import '../styles/login.scss';
 import {Container, Row, Col, Form, Button} from 'react-bootstrap';
 import axios from 'axios';
 
-const Login = () => {
+const SignIn = () => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -63,4 +63,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignIn;
