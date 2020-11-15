@@ -20,9 +20,9 @@ const SignUpPage = (props) => {
     const uri = '/api/sign-up'
     try {
       const res = await axios.post(uri, params)
-      // alert(res)
+      alert(res)
     } catch(e) {
-      // alert('error')
+      alert(e)
     }
   }
 
@@ -37,13 +37,13 @@ const SignUpPage = (props) => {
         <Col>
           <Form className='col-md-6 offset-md-3 col-sm-8 offset-sm-2 col-xs-8 offset-xs-2'>
             <Form.Group>
-              <Form.Control onChange={handleChange} onKeyDown={handleKeyPress} type='text' name='id' placeholder='ID' />
+              <Form.Control onChange={handleChange} onKeyDown={handleKeyPress} type='text' name='email' placeholder='Email' autoComplete='off' />
             </Form.Group>
             <Form.Group>
-              <Form.Control onChange={handleChange} onKeyDown={handleKeyPress} type='password' name='password' placeholder='Password' />
+              <Form.Control onChange={handleChange} onKeyDown={handleKeyPress} type='password' name='password' placeholder='Password' autoComplete='off' />
             </Form.Group>
             <Form.Group>
-              <Form.Control onChange={handleChange} onKeyDown={handleKeyPress} type='password' name='confirmPassword' placeholder='Confirm password' />
+              <Form.Control onChange={handleChange} onKeyDown={handleKeyPress} type='password' name='confirmPassword' placeholder='Confirm password' autoComplete='off' />
             </Form.Group>
             <div className='text-center'>
               <Button onClick={submit} className='w-100'>Sign up</Button>
