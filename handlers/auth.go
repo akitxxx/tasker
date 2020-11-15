@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"database/sql"
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
@@ -33,6 +34,12 @@ func HandleAuth(w http.ResponseWriter, r *http.Request) {
 
 	user, err := models.FindByEmailAndPassword(auth.Email, auth.Password)
 	if err != nil {
+		if err == sql.ErrNoRows {
+			// no rows
+			renderError(w, err, http.StatusUnauthorized)
+			return
+		}
+
 		renderError(w, err, http.StatusInternalServerError)
 		return
 	}
@@ -42,5 +49,5 @@ func HandleAuth(w http.ResponseWriter, r *http.Request) {
 		Value: user.Email,
 	}
 	http.SetCookie(w, cookie)
-	renderResponse(w, auth.Email, http.StatusOK)
+	renderResponse(w, nil, http.StatusOK)
 }
