@@ -1,41 +1,41 @@
-import React, { useState } from 'react';
-import '../styles/login.scss';
-import {Container, Row, Col, Form, Button} from 'react-bootstrap';
-import axios from 'axios';
+import React, { useState } from 'react'
+import '../styles/login.scss'
+import {Container, Row, Col, Form, Button} from 'react-bootstrap'
+import axios from 'axios'
 
-const Login = () => {
+const SignIn = () => {
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
 
   const handleEmailChange = e => {
-    setEmail(e.target.value);
-  };
+    setEmail(e.target.value)
+  }
 
   const handlePasswordChange = e => {
-    setPassword(e.target.value);
-  };
+    setPassword(e.target.value)
+  }
 
   const handleKeyPress = e => {
-    const ENTER = 13;
+    const ENTER = 13
     if (e.keyCode === ENTER) {
-      submit();
+      submit()
     }
-  };
+  }
 
   const submit = async () => {
-    const uri = '/api/auth';
+    const uri = '/api/auth'
     try {
       const res = await axios.post(uri, {
         email: email,
         password: password
-      });
-      alert(`ログイン成功\nemail: ${res.data}\n`);
-      window.location.href = '/task-board';
+      })
+      alert(`ログイン成功\nemail: ${res.data}\n`)
+      window.location.href = '/task-board'
     } catch (err) {
-      alert('ログイン失敗\n' + err);
+      alert('ログイン失敗\n' + err)
     }
-  };
+  }
 
   return (
     <Container className='login'>
@@ -60,7 +60,7 @@ const Login = () => {
         </Col>
       </Row>
     </Container>
-  );
-};
+  )
+}
 
-export default Login;
+export default SignIn

@@ -1,8 +1,6 @@
 package models
 
 import (
-	"database/sql"
-
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -13,7 +11,7 @@ type User struct {
 }
 
 func SelectUserList() (*[]User, error) {
-	var db, _ = sql.Open("mysql", "root:root@tcp(tasker_dev_db)/tasker_dev")
+	var db, _ = DbConn()
 
 	sql := "select id, email from users;"
 	stmt, err := db.Prepare(sql)
@@ -40,7 +38,7 @@ func SelectUserList() (*[]User, error) {
 }
 
 func FindById(id uint64) (*User, error) {
-	var db, _ = sql.Open("mysql", "root:root@tcp(tasker_dev_db)/tasker_dev")
+	var db, _ = DbConn()
 
 	sql := "select id, email from users where id = ?;"
 	stmt, err := db.Prepare(sql)
@@ -58,7 +56,7 @@ func FindById(id uint64) (*User, error) {
 }
 
 func FindByEmailAndPassword(email string, password string) (*User, error) {
-	var db, _ = sql.Open("mysql", "root:root@tcp(tasker_dev_db)/tasker_dev")
+	var db, _ = DbConn()
 
 	sql := "select id, email from users where email = ? and password = ?;"
 	stmt, err := db.Prepare(sql)

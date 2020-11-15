@@ -6,13 +6,23 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	sqlmock "github.com/DATA-DOG/go-sqlmock"
 	"github.com/lelouch99v/tasker/models"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestGetUserList(t *testing.T) {
 	t.Skip()
+	_, mock := MockDBInit(t)
 
+	// define mock
+	columns := []string{"id", "email"}
+	email1 := "test1@test.com"
+	email2 := "test2@test.com"
+	mock.ExpectQuery("select id, email from users;").
+		WillReturnRows(sqlmock.NewRows(columns).AddRow(1, email1).AddRow(2, email2))
+
+	// execute
 	mux := http.NewServeMux()
 	mux.HandleFunc("/user", GetUserList)
 
@@ -26,16 +36,30 @@ func TestGetUserList(t *testing.T) {
 		t.Errorf(err.Error())
 	}
 
-	assert.Equal(t, writer.Code, http.StatusOK)
-	assert.Equal(t, users[0].ID, uint64(1))
-	assert.Equal(t, users[1].ID, uint64(2))
-	assert.Equal(t, users[0].Email, "test1@example.com")
-	assert.Equal(t, users[1].Email, "test2@example.com")
+	// assert
+	if err = mock.ExpectationsWereMet(); err != nil {
+		t.Fatalf("failed to ExpectationWerMet: %s", err)
+	}
+
+	assert.Equal(t, http.StatusOK, writer.Code)
+	assert.Equal(t, uint64(1), users[0].ID)
+	assert.Equal(t, uint64(2), users[1].ID)
+	assert.Equal(t, email1, users[0].Email)
+	assert.Equal(t, email2, users[1].Email)
 }
 
-func Test(t *testing.T) {
+func TestFindUserById(t *testing.T) {
 	t.Skip()
+	_, mock := MockDBInit(t)
 
+	// define mock
+	columns := []string{"id", "email"}
+	email := "test1@test.com"
+	mock.ExpectQuery("select id, email from users where id = ?;").
+		WithArgs(1).
+		WillReturnRows(sqlmock.NewRows(columns).AddRow(1, email))
+
+	// execute
 	mux := http.NewServeMux()
 	mux.HandleFunc("/user/", FindUserById)
 
@@ -49,7 +73,12 @@ func Test(t *testing.T) {
 		t.Errorf(err.Error())
 	}
 
-	assert.Equal(t, writer.Code, http.StatusOK)
-	assert.Equal(t, user.ID, uint64(1))
-	assert.Equal(t, user.Email, "test1@example.com")
+	// asssert
+	if err = mock.ExpectationsWereMet(); err != nil {
+		t.Fatalf("failed to ExpectationWerMet: %s", err)
+	}
+
+	assert.Equal(t, http.StatusOK, writer.Code)
+	assert.Equal(t, uint64(1), user.ID)
+	assert.Equal(t, email, user.Email)
 }
