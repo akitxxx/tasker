@@ -9,6 +9,22 @@ import (
 	"github.com/lelouch99v/tasker/models"
 )
 
+func SignUp(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.NotFound(w, r)
+		return
+	}
+
+	user, err := models.RegistUser(r.FormValue("email"), r.FormValue("password"))
+	if err != nil {
+		log.Println(err)
+		renderError(w, err, http.StatusInternalServerError)
+		return
+	}
+
+	renderResponse(w, user, http.StatusOK)
+}
+
 func GetUserList(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		http.NotFound(w, r)

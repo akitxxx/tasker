@@ -72,3 +72,26 @@ func FindByEmailAndPassword(email string, password string) (*User, error) {
 
 	return &user, nil
 }
+
+func RegistUser(email string, password string) (*User, error) {
+	var db, _ = DbConn()
+
+	sql := "insert into users (email, password) values (?, ?)"
+	stmt, err := db.Prepare(sql)
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+
+	// insert
+	res, err := stmt.Exec(email, password)
+	if err != nil {
+		return nil, err
+	}
+
+	// get inserted user
+	id, _ := res.LastInsertId()
+	user, _ := FindById((uint64(id)))
+
+	return user, nil
+}

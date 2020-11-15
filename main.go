@@ -15,6 +15,7 @@ func main() {
 	mux.HandleFunc("/auth", handlers.HandleAuth)
 	mux.HandleFunc("/user", handlers.GetUserList)
 	mux.HandleFunc("/user/", handlers.FindUserById)
+	mux.HandleFunc("/sign-up", handlers.SignUp)
 
 	port := ":5010"
 	server := &http.Server{
