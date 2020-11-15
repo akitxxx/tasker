@@ -15,7 +15,14 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user, err := models.RegistUser(r.FormValue("email"), r.FormValue("password"))
+	email := r.FormValue("email")
+	password := r.FormValue("password")
+	if email != "" || password != "" {
+		renderError(w, nil, http.StatusBadRequest)
+		return
+	}
+
+	user, err := models.RegistUser(email, password)
 	if err != nil {
 		log.Println(err)
 		renderError(w, err, http.StatusInternalServerError)
