@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"encoding/json"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"strconv"
@@ -15,14 +17,21 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	email := r.FormValue("email")
-	password := r.FormValue("password")
-	if email != "" || password != "" {
-		renderError(w, nil, http.StatusBadRequest)
-		return
+	// get request body
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		renderError(w, err, http.StatusInternalServerError)
 	}
 
-	user, err := models.RegistUser(email, password)
+	// json parse
+	jsonBody := map[string]string{}
+	err = json.Unmarshal(body, &jsonBody)
+	if err != nil {
+		renderError(w, err, http.StatusInternalServerError)
+	}
+
+	// register user
+	user, err := models.RegistUser(jsonBody["email"], jsonBody["password"])
 	if err != nil {
 		log.Println(err)
 		renderError(w, err, http.StatusInternalServerError)
