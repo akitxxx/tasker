@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import '../styles/login.scss'
+import '../../styles/login.scss'
 import {Container, Row, Col, Form, Button} from 'react-bootstrap'
 import axios from 'axios'
 
-const SignIn = () => {
+const SignInPage = () => {
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -63,4 +63,4 @@ const SignIn = () => {
   )
 }
 
-export default SignIn
+export default SignInPage
