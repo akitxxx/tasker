@@ -24,7 +24,7 @@ const SignInPage = () => {
   }
 
   const submit = async () => {
-    const uri = '/api/auth'
+    const uri = '/api/sign-in'
     try {
       const res = await axios.post(uri, {
         email: email,
