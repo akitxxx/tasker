@@ -13,12 +13,18 @@ import (
 )
 
 // JwtMiddleware check token
-var JwtMiddleware = jwtmiddleware.New(jwtmiddleware.Options{
+var jwtMiddleware = jwtmiddleware.New(jwtmiddleware.Options{
 	ValidationKeyGetter: func(token *jwt.Token) (interface{}, error) {
 		return []byte("secret"), nil
 	},
 	SigningMethod: jwt.SigningMethodHS256,
 })
+
+func JwtMiddleware(handler http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		jwtMiddleware.Handler(handler).ServeHTTP(w, r)
+	}
+}
 
 func HandleAuth(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
