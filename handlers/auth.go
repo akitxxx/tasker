@@ -12,9 +12,10 @@ import (
 	"github.com/lelouch99v/tasker/models"
 )
 
+// Auth is auth params
 type Auth struct {
-	Email    string `json"email"`
-	Password string `json"password"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
 }
 
 var jwtMiddleware = jwtmiddleware.New(jwtmiddleware.Options{
@@ -31,24 +32,27 @@ func JwtMiddleware(handler http.HandlerFunc) http.HandlerFunc {
 	}
 }
 
+// HandleAuth is authentication handler
 func HandleAuth(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.NotFound(w, r)
 		return
 	}
 
-	var auth Auth
+	// Read posted params
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		renderError(w, err, http.StatusInternalServerError)
 		return
 	}
+	var auth Auth
 	err = json.Unmarshal(body, &auth)
 	if err != nil {
 		renderError(w, err, http.StatusInternalServerError)
 		return
 	}
 
+	// Find the user
 	user, err := models.FindByEmailAndPassword(auth.Email, auth.Password)
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -70,6 +74,7 @@ func HandleAuth(w http.ResponseWriter, r *http.Request) {
 	renderResponse(w, token, http.StatusOK)
 }
 
+// Create JWT token
 func createToken(user *models.User) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"id":    user.ID,
