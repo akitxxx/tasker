@@ -12,10 +12,10 @@ func main() {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("/", health)
-	mux.HandleFunc("/auth", handlers.HandleAuth)
-	mux.HandleFunc("/user", handlers.GetUserList)
-	mux.HandleFunc("/user/", handlers.FindUserById)
 	mux.HandleFunc("/sign-up", handlers.SignUp)
+	mux.HandleFunc("/sign-in", handlers.HandleAuth)
+	mux.HandleFunc("/user", handlers.JwtMiddleware(handlers.GetUserList))
+	mux.HandleFunc("/user/", handlers.JwtMiddleware(handlers.FindUserById))
 
 	port := ":5010"
 	server := &http.Server{
@@ -32,13 +32,9 @@ func main() {
 func health(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
 		log.Println(r.URL.Path + " is not found.")
-		errorHandler(w, r, http.StatusNotFound)
+		w.WriteHeader(http.StatusNotFound)
 	}
 	if r.Method == "GET" {
 		w.Write([]byte("OK"))
 	}
-}
-
-func errorHandler(w http.ResponseWriter, r *http.Request, statusCode int) {
-	w.WriteHeader(statusCode)
 }
