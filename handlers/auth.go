@@ -74,9 +74,10 @@ func createToken(user *models.User) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"id":    user.ID,
 		"email": user.Email,
-		"iss":   "__init__",
+		"iss":   "tasker",
 	})
 
+	// TODO
 	key := "secret"
 	tokenString, err := token.SignedString([]byte(key))
 	if err != nil {
