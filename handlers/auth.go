@@ -12,7 +12,11 @@ import (
 	"github.com/lelouch99v/tasker/models"
 )
 
-// JwtMiddleware check token
+type Auth struct {
+	Email    string `json"email"`
+	Password string `json"password"`
+}
+
 var jwtMiddleware = jwtmiddleware.New(jwtmiddleware.Options{
 	ValidationKeyGetter: func(token *jwt.Token) (interface{}, error) {
 		return []byte("secret"), nil
@@ -20,6 +24,7 @@ var jwtMiddleware = jwtmiddleware.New(jwtmiddleware.Options{
 	SigningMethod: jwt.SigningMethodHS256,
 })
 
+// JwtMiddleware check token
 func JwtMiddleware(handler http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		jwtMiddleware.Handler(handler).ServeHTTP(w, r)
@@ -32,19 +37,19 @@ func HandleAuth(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	var auth Auth
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		renderError(w, err, http.StatusInternalServerError)
 		return
 	}
-	var user models.User
-	err = json.Unmarshal(body, &user)
+	err = json.Unmarshal(body, &auth)
 	if err != nil {
 		renderError(w, err, http.StatusInternalServerError)
 		return
 	}
 
-	_, err = models.FindByEmailAndPassword(user.Email, user.Password)
+	user, err := models.FindByEmailAndPassword(auth.Email, auth.Password)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			// no rows
@@ -60,14 +65,14 @@ func HandleAuth(w http.ResponseWriter, r *http.Request) {
 	token, err := createToken(user)
 	if err != nil {
 		renderError(w, err, http.StatusInternalServerError)
-
 	}
 
 	renderResponse(w, token, http.StatusOK)
 }
 
-func createToken(user models.User) (string, error) {
+func createToken(user *models.User) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"id":    user.ID,
 		"email": user.Email,
 		"iss":   "__init__",
 	})
