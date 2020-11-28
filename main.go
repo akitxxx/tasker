@@ -32,13 +32,9 @@ func main() {
 func health(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
 		log.Println(r.URL.Path + " is not found.")
-		errorHandler(w, r, http.StatusNotFound)
+		w.WriteHeader(http.StatusNotFound)
 	}
 	if r.Method == "GET" {
 		w.Write([]byte("OK"))
 	}
-}
-
-func errorHandler(w http.ResponseWriter, r *http.Request, statusCode int) {
-	w.WriteHeader(statusCode)
 }
