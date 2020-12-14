@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import Router from 'next/router'
 import '../../styles/login.scss'
 import {Container, Row, Col, Form, Button} from 'react-bootstrap'
 import axios from 'axios'
@@ -31,7 +32,7 @@ const SignInPage = () => {
         password: password
       })
       alert(`ログイン成功\nemail: ${res.data}\n`)
-      window.location.href = '/task-board'
+      Router.push('/task-board')
     } catch (err) {
       alert('ログイン失敗\n' + err)
     }
