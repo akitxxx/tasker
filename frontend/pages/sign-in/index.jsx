@@ -33,7 +33,7 @@ const SignInPage = () => {
       })
 
       // Set token to local storage
-      localStorage.setItem('token', res.data)
+      localStorage.setItem('tasker_token', res.data)
 
       Router.push('/task-board')
     } catch (err) {
