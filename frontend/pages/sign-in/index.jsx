@@ -31,7 +31,10 @@ const SignInPage = () => {
         email: email,
         password: password
       })
-      alert(`ログイン成功\nemail: ${res.data}\n`)
+
+      // Set token to local storage
+      localStorage.setItem('token', res.data)
+
       Router.push('/task-board')
     } catch (err) {
       alert('ログイン失敗\n' + err)
