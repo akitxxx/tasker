@@ -45,7 +45,7 @@ const SignInPage = () => {
     <Container className='login'>
       <Row>
         <Col className='text-center my-3'>
-          <h2>ログイン</h2>
+          <h2>Sign in</h2>
         </Col>
       </Row>
       <Row>
