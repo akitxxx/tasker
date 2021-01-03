@@ -79,3 +79,42 @@ func CreateTask(title string, content string) (*Task, error) {
 
 	return task, nil
 }
+
+func UpdateTask(t *Task) (*Task, error) {
+	var db, _ = DbConn()
+
+	sql := "update tasks set title = ?, content = ? where id = ?"
+	stmt, err := db.Prepare(sql)
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+
+	// update
+	res, err := stmt.Exec(t.Title, t.Content, t.ID)
+	if err != nil {
+		return nil, err
+	}
+
+	// get updated task
+	id, _ := res.RowsAffected()
+	task, _ := FindTaskById((uint64(id)))
+	return task, nil
+}
+
+func deleteTask(id int) error {
+	var db, _ = DbConn()
+
+	stmtDelete, err := db.Prepare("delete from tasks where id = ?")
+	if err != nil {
+		return err
+	}
+	defer stmtDelete.Close()
+
+	_, err = stmtDelete.Exec(id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
