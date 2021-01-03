@@ -21,6 +21,7 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		renderError(w, err, http.StatusInternalServerError)
+		return
 	}
 
 	// json parse
@@ -28,6 +29,7 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 	err = json.Unmarshal(body, &jsonBody)
 	if err != nil {
 		renderError(w, err, http.StatusInternalServerError)
+		return
 	}
 	email := jsonBody["email"]
 	password := jsonBody["password"]
