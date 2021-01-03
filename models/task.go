@@ -102,7 +102,7 @@ func UpdateTask(t *Task) (*Task, error) {
 	return task, nil
 }
 
-func deleteTask(id int) error {
+func DeleteTask(id int) error {
 	var db, _ = DbConn()
 
 	stmtDelete, err := db.Prepare("delete from tasks where id = ?")
