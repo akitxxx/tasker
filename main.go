@@ -16,6 +16,10 @@ func main() {
 	mux.HandleFunc("/sign-in", handlers.HandleAuth)
 	mux.HandleFunc("/user", handlers.JwtMiddleware(handlers.GetUserList))
 	mux.HandleFunc("/user/", handlers.JwtMiddleware(handlers.FindUserById))
+	mux.HandleFunc("/task", handlers.JwtMiddleware(handlers.GetTaskList))
+	mux.HandleFunc("/create-task", handlers.JwtMiddleware(handlers.CreateTask))
+	mux.HandleFunc("/update-task", handlers.JwtMiddleware(handlers.UpdateTask))
+	mux.HandleFunc("/delete-task", handlers.JwtMiddleware(handlers.DeleteTask))
 
 	port := ":5010"
 	server := &http.Server{

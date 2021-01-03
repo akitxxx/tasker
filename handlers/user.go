@@ -21,6 +21,7 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		renderError(w, err, http.StatusInternalServerError)
+		return
 	}
 
 	// json parse
@@ -28,10 +29,19 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 	err = json.Unmarshal(body, &jsonBody)
 	if err != nil {
 		renderError(w, err, http.StatusInternalServerError)
+		return
+	}
+	email := jsonBody["email"]
+	password := jsonBody["password"]
+
+	// validate
+	if email == "" || password == "" {
+		renderError(w, err, http.StatusBadRequest)
+		return
 	}
 
 	// register user
-	user, err := models.RegistUser(jsonBody["email"], jsonBody["password"])
+	user, err := models.RegistUser(email, password)
 	if err != nil {
 		log.Println(err)
 		renderError(w, err, http.StatusInternalServerError)
@@ -74,7 +84,7 @@ func FindUserById(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user, err := models.FindById(userId)
+	user, err := models.FindUserById(userId)
 	if err != nil {
 		log.Println(err)
 		renderError(w, err, http.StatusBadRequest)

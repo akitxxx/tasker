@@ -45,7 +45,7 @@ const SignInPage = () => {
     <Container className='login'>
       <Row>
         <Col className='text-center my-3'>
-          <h2>ログイン</h2>
+          <h2>Sign in</h2>
         </Col>
       </Row>
       <Row>
@@ -58,7 +58,7 @@ const SignInPage = () => {
               <Form.Control onChange={handlePasswordChange} onKeyDown={handleKeyPress} type='password' name='password' placeholder='password' />
             </Form.Group>
             <div className='text-center'>
-              <Button onClick={submit} className='w-100'>ログイン</Button>
+              <Button onClick={submit} className='w-100'>Sign in</Button>
             </div>
           </Form>
         </Col>

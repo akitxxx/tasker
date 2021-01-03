@@ -37,7 +37,7 @@ func SelectUserList() (*[]User, error) {
 	return &users, nil
 }
 
-func FindById(id uint64) (*User, error) {
+func FindUserById(id uint64) (*User, error) {
 	var db, _ = DbConn()
 
 	sql := "select id, email from users where id = ?;"
@@ -55,7 +55,7 @@ func FindById(id uint64) (*User, error) {
 	return &user, nil
 }
 
-func FindByEmailAndPassword(email string, password string) (*User, error) {
+func FindUserByEmailAndPassword(email string, password string) (*User, error) {
 	var db, _ = DbConn()
 
 	sql := "select id, email from users where email = ? and password = ?;"
@@ -91,7 +91,7 @@ func RegistUser(email string, password string) (*User, error) {
 
 	// get inserted user
 	id, _ := res.LastInsertId()
-	user, _ := FindById((uint64(id)))
+	user, _ := FindUserById((uint64(id)))
 
 	return user, nil
 }
