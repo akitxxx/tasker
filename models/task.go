@@ -38,3 +38,44 @@ func SelectTaskList() (*[]Task, error) {
 
 	return &tasks, nil
 }
+
+func FindTaskById(id uint64) (*Task, error) {
+	var db, _ = DbConn()
+
+	sql := "select * from tasks where id = ?;"
+	stmt, err := db.Prepare(sql)
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+
+	task := Task{}
+	if err := stmt.QueryRow(id).Scan(&task.ID, &task.Title, &task.Content, &task.CreatedAt, &task.UpdatedAt); err != nil {
+		return nil, err
+	}
+
+	return &task, nil
+}
+
+func CreateTask(title string, content string) (*Task, error) {
+	var db, _ = DbConn()
+
+	sql := "insert into tasks(title, content) values(?, ?)"
+	stmt, err := db.Prepare(sql)
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+
+	// insert
+	res, err := stmt.Exec(title, content)
+	if err != nil {
+		return nil, err
+	}
+
+	// get inserted task
+	id, _ := res.LastInsertId()
+	task, _ := FindTaskById((uint64(id)))
+
+	return task, nil
+}
