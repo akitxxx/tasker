@@ -17,8 +17,7 @@ func main() {
 	mux.HandleFunc("/user", handlers.JwtMiddleware(handlers.GetUserList))
 	mux.HandleFunc("/user/", handlers.JwtMiddleware(handlers.FindUserById))
 	mux.HandleFunc("/task", handlers.JwtMiddleware(handlers.GetTaskList))
-	// mux.HandleFunc("/task", handlers.JwtMiddleware(handlers.CreateTask))
-	mux.HandleFunc("/create-task", handlers.CreateTask)
+	mux.HandleFunc("/create-task", handlers.JwtMiddleware(handlers.CreateTask))
 
 	port := ":5010"
 	server := &http.Server{
