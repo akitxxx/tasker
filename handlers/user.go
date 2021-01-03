@@ -29,9 +29,17 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		renderError(w, err, http.StatusInternalServerError)
 	}
+	email := jsonBody["email"]
+	password := jsonBody["password"]
+
+	// validate
+	if email == "" || password == "" {
+		renderError(w, err, http.StatusBadRequest)
+		return
+	}
 
 	// register user
-	user, err := models.RegistUser(jsonBody["email"], jsonBody["password"])
+	user, err := models.RegistUser(email, password)
 	if err != nil {
 		log.Println(err)
 		renderError(w, err, http.StatusInternalServerError)
