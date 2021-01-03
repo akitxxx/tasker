@@ -53,7 +53,7 @@ func HandleAuth(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Find the user
-	user, err := models.FindByEmailAndPassword(auth.Email, auth.Password)
+	user, err := models.FindUserByEmailAndPassword(auth.Email, auth.Password)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			// no rows

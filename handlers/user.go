@@ -74,7 +74,7 @@ func FindUserById(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user, err := models.FindById(userId)
+	user, err := models.FindUserById(userId)
 	if err != nil {
 		log.Println(err)
 		renderError(w, err, http.StatusBadRequest)
