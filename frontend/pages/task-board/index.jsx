@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Router from 'next/router';
 import { Container, Row, Col } from 'react-bootstrap';
 import Card from '../../components/card';
 import axios from 'axios';
@@ -14,13 +15,19 @@ const TaskBoard = () => {
       const uri = '/api/task';
       // get token from local storage
       const token = localStorage.getItem('tasker_token');
-      // get task list from server
-      const res = await axios.get(uri, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        }
-      });
-      setTaskList(res.data)
+
+      try {
+        // get task list from server
+        const res = await axios.get(uri, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        });
+        setTaskList(res.data);
+      } catch(e) {
+        alert(e);
+        Router.push('/sign-in')
+      }
     }) ();
   });
 
