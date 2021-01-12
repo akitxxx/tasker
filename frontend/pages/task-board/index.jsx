@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import Router from 'next/router';
 import { Container, Row, Col } from 'react-bootstrap';
-import Card from '../../components/card';
+import Lane from '../../components/lane';
 import axios from 'axios';
 import { useEffect } from 'react';
+import '../../styles/task-board.scss';
 
 const TaskBoard = () => {
 
@@ -32,17 +33,15 @@ const TaskBoard = () => {
   });
 
   return (
-    <Container className='task-board'>
+    <Container className='taskBoard'>
       <Row>
-        <Col className='text-center'>
+        <Col className="taskBoardHeader">
           <h2>Task Board</h2>
         </Col>
       </Row>
       <Row>
         <Col>
-          {taskList.map((task) => {
-            return <Card key={task.id} title={task.title} />;
-          })}
+          <Lane taskList={taskList} />
         </Col>
       </Row>
     </Container>

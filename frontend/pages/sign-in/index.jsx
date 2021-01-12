@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Router from 'next/router';
-import '../../styles/login.scss';
+import '../../styles/common.scss';
 import {Container, Row, Col, Form, Button} from 'react-bootstrap';
 import axios from 'axios'
 

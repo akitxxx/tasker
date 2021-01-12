@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+import './card.module.scss';
 
 const Card = (props) => {
   return (
-    <div className="cord">
+    <div className="card" className="card">
       <div className="title">{props.title}</div>
     </div>
   );
