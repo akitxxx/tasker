@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Card from './card';
 import './lane.module.scss';
 import { Form, Button } from 'react-bootstrap';
+import axios from 'axios';
 
 const Lane = (props) => {
 
@@ -22,7 +23,19 @@ const Lane = (props) => {
   };
 
   const handleClickAdd = () => {
-    setShowInput(false);
+    const uri = '/api/create-task';
+    const token = localStorage.getItem('tasker_token');
+
+    try {
+        const res = await axios.get(uri, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        });
+      setShowInput(false);
+    } catch(e) {
+
+    }
   };
 
   return (
