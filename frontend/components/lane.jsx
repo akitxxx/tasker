@@ -34,7 +34,7 @@ const Lane = (props) => {
         });
       setShowInput(false);
     } catch(e) {
-
+      alert(e);
     }
   };
 
