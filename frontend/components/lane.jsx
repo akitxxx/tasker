@@ -27,20 +27,23 @@ const Lane = (props) => {
     const token = localStorage.getItem('tasker_token');
 
     try {
-      await axios.post(uri,{
+      const res = await axios.post(uri,{
         title: taskInput.current.value,
       }, {
         headers: {
           Authorization: `Bearer ${token}`,
         }
       });
+
+      props.taskList.push(res.data);
+      props.setTaskList(props.taskList);
+
       setShowInput(false);
     } catch(e) {
       alert(e);
       return;
     }
 
-    props.fetchTaskList();
   };
 
   return (

@@ -43,7 +43,7 @@ const TaskBoard = () => {
       </Row>
       <Row>
         <Col>
-          <Lane taskList={taskList} fetchTaskList={fetchTaskList} />
+          <Lane taskList={taskList} setTaskList={setTaskList} />
         </Col>
       </Row>
     </Container>
