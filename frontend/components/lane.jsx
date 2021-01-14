@@ -22,20 +22,25 @@ const Lane = (props) => {
     setShowInput(false);
   };
 
-  const handleClickAdd = () => {
+  const handleClickAdd = async (e) => {
     const uri = '/api/create-task';
     const token = localStorage.getItem('tasker_token');
 
     try {
-        const res = await axios.get(uri, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          }
-        });
+      await axios.post(uri,{
+        title: taskInput.current.value,
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      });
       setShowInput(false);
     } catch(e) {
       alert(e);
+      return;
     }
+
+    props.fetchTaskList();
   };
 
   return (

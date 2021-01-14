@@ -12,7 +12,10 @@ const TaskBoard = () => {
 
   useEffect(() => {
     // componentDidMount
-    (async () => {
+    fetchTaskList();
+  },[]);
+
+  const fetchTaskList = async () => {
       const uri = '/api/task';
       // get token from local storage
       const token = localStorage.getItem('tasker_token');
@@ -29,8 +32,7 @@ const TaskBoard = () => {
         alert(e);
         Router.push('/sign-in')
       }
-    }) ();
-  });
+  };
 
   return (
     <Container className='taskBoard'>
@@ -41,7 +43,7 @@ const TaskBoard = () => {
       </Row>
       <Row>
         <Col>
-          <Lane taskList={taskList} />
+          <Lane taskList={taskList} fetchTaskList={fetchTaskList} />
         </Col>
       </Row>
     </Container>
