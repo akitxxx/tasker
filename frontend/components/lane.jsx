@@ -64,7 +64,7 @@ const Lane = (props) => {
         <Form className="taskInputForm" onSubmit={(e) => {e.preventDefault();}}>
           <Form.Control type="text" ref={taskInput} onKeyDown={handleKeyDown} />
             <Button className="mr-2" onClick={handleClickAdd}>Add</Button>
-            <Button variant="" onClick={handleClickCancel}>Cancel</Button>
+            <Button variant="default" className="btnCancel" onClick={handleClickCancel}>Cancel</Button>
         </Form>
         }
 
