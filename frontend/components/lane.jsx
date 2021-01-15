@@ -69,7 +69,7 @@ const Lane = (props) => {
         }
 
         {!showInput &&
-        <Button variant="default" className="btnAddCard" onClick={handleClickAddCard}>+ Add card</Button>}
+        <Button variant="default" className="btnAddCard" onClick={handleClickAddCard}>+ Add task</Button>}
       </div>
     </div>
   );
