@@ -19,7 +19,7 @@ func main() {
 	mux.HandleFunc("/task", handlers.JwtMiddleware(handlers.GetTaskList))
 	mux.HandleFunc("/create-task", handlers.JwtMiddleware(handlers.CreateTask))
 	mux.HandleFunc("/update-task", handlers.JwtMiddleware(handlers.UpdateTask))
-	mux.HandleFunc("/delete-task", handlers.JwtMiddleware(handlers.DeleteTask))
+	mux.HandleFunc("/delete-task/", handlers.JwtMiddleware(handlers.DeleteTask))
 
 	port := ":5010"
 	server := &http.Server{

@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/lelouch99v/tasker/models"
 )
@@ -108,29 +109,16 @@ func DeleteTask(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// get request body
-	body, err := ioutil.ReadAll(r.Body)
-	if err != nil {
-		renderError(w, err, http.StatusInternalServerError)
-	}
+	// localhost:xxxx/xxxxx/id のようなパスによるid指定を想定
+	idStr := strings.SplitN(r.URL.Path, "/", 3)[2]
 
-	// json parse
-	jsonBody := map[string]string{}
-	err = json.Unmarshal(body, &jsonBody)
+	// userIDStrは文字列なのでuint64型に変換する。
+	id, err := strconv.Atoi(idStr)
 	if err != nil {
-		renderError(w, err, http.StatusInternalServerError)
-		return
-	}
-	// TODO unmarshal to int
-	idStr := jsonBody["id"]
-
-	// validate
-	if idStr == "" {
-		// TODO render error message
+		log.Println(err)
 		renderError(w, err, http.StatusBadRequest)
 		return
 	}
-	id, _ := strconv.Atoi(idStr)
 
 	// delete task
 	err = models.DeleteTask(id)
