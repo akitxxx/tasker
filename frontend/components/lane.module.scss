@@ -18,8 +18,9 @@ $background: #ebecf0;
 .btnAddCard {
   height: 40px;
   padding: .2rem .6rem;
+
   &:hover {
-    background-color: darken($background, 5%);
+    background-color: darken($background, 10%);
   }
 }
 

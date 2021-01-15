@@ -27,7 +27,7 @@ const TaskBoard = () => {
             Authorization: `Bearer ${token}`,
           }
         });
-        setTaskList(res.data);
+        res.data ? setTaskList(res.data) : setTaskList([]);
       } catch(e) {
         alert(e);
         Router.push('/sign-in')
@@ -43,7 +43,7 @@ const TaskBoard = () => {
       </Row>
       <Row>
         <Col>
-          <Lane taskList={taskList} setTaskList={setTaskList} />
+          <Lane taskList={taskList} setTaskList={setTaskList} fetchTaskList={fetchTaskList}/>
         </Col>
       </Row>
     </Container>

@@ -1,0 +1,7 @@
+$background: #fff;
+
+.btn-white{
+  &:hover {
+    background-color: darken($background, 10%);
+  }
+}

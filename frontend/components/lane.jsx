@@ -10,6 +10,7 @@ const Lane = (props) => {
   const taskInput = useRef(null);
 
   useEffect(() => {
+    // focus input form when it is shown
     showInput && taskInput.current.focus();
   }, [showInput]);
 
@@ -22,7 +23,13 @@ const Lane = (props) => {
     setShowInput(false);
   };
 
-  const handleClickAdd = async (e) => {
+  const handleKeyDown = (e) => {
+    if(e.keyCode === 13) {
+      handleClickAdd();
+    }
+  };
+
+  const handleClickAdd = async () => {
     const uri = '/api/create-task';
     const token = localStorage.getItem('tasker_token');
 
@@ -35,15 +42,13 @@ const Lane = (props) => {
         }
       });
 
-      props.taskList.push(res.data);
-      props.setTaskList(props.taskList);
+      props.taskList && props.setTaskList([...props.taskList, res.data]);
 
       setShowInput(false);
     } catch(e) {
       alert(e);
       return;
     }
-
   };
 
   return (
@@ -51,20 +56,20 @@ const Lane = (props) => {
       <div className="laneHeader">
         <h5>Tasks</h5>
       </div>
-      {props.taskList.map((task) => {
-        return <Card key={task.id} title={task.title} />;
+      {props.taskList && props.taskList.map((task) => {
+         return <Card key={task.id} id={task.id} title={task.title} fetchTaskList={props.fetchTaskList}/>;
       })}
       <div className="laneFooter">
         {showInput &&
-        <Form className="taskInputForm">
-          <Form.Control type="text" ref={taskInput} />
+        <Form className="taskInputForm" onSubmit={(e) => {e.preventDefault();}}>
+          <Form.Control type="text" ref={taskInput} onKeyDown={handleKeyDown} />
             <Button className="mr-2" onClick={handleClickAdd}>Add</Button>
             <Button variant="" onClick={handleClickCancel}>Cancel</Button>
         </Form>
         }
 
         {!showInput &&
-        <button type="button" className="btn btnAddCard" onClick={handleClickAddCard}>+ Add card</button>}
+        <Button variant="default" className="btnAddCard" onClick={handleClickAddCard}>+ Add card</Button>}
       </div>
     </div>
   );
