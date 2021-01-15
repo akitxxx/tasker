@@ -1,0 +1,14 @@
+.card {
+  background-color: #fff;
+  margin: .5rem 0;
+  padding: .6rem;
+  flex-direction: row;
+  .title {
+    width: 90%;
+  }
+
+  button {
+    width: 10%;
+    padding: 0;
+  }
+}

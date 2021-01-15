@@ -1,0 +1,36 @@
+$background: #ebecf0;
+
+.lane {
+  background-color: $background;
+  margin: 0 .5rem;
+}
+
+.laneHeader {
+  height: 2rem;
+  padding: .5rem 0;
+  margin-bottom: 1rem;
+}
+
+.laneFooter {
+  padding-bottom: .5rem;
+}
+
+.btnAddCard {
+  height: 40px;
+  padding: .2rem .6rem;
+
+  &:hover {
+    background-color: darken($background, 10%);
+  }
+}
+
+.btnCancel {
+  &:hover {
+    background-color: darken($background, 10%);
+  }
+}
+
+.taskInputForm input[type="text"] {
+  height: 40px;
+  margin-bottom: .5rem;
+}

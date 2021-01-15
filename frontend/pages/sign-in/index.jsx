@@ -1,31 +1,31 @@
-import React, { useState } from 'react'
-import Router from 'next/router'
-import '../../styles/login.scss'
-import {Container, Row, Col, Form, Button} from 'react-bootstrap'
+import React, { useState } from 'react';
+import Router from 'next/router';
+import '../../styles/common.scss';
+import {Container, Row, Col, Form, Button} from 'react-bootstrap';
 import axios from 'axios'
 
 const SignInPage = () => {
 
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleEmailChange = e => {
-    setEmail(e.target.value)
-  }
+    setEmail(e.target.value);
+  };
 
   const handlePasswordChange = e => {
-    setPassword(e.target.value)
-  }
+    setPassword(e.target.value);
+  };
 
   const handleKeyPress = e => {
-    const ENTER = 13
+    const ENTER = 13;
     if (e.keyCode === ENTER) {
-      submit()
+      submit();
     }
-  }
+  };
 
   const submit = async () => {
-    const uri = '/api/sign-in'
+    const uri = '/api/sign-in';
     try {
       const res = await axios.post(uri, {
         email: email,
@@ -39,7 +39,7 @@ const SignInPage = () => {
     } catch (err) {
       alert('ログイン失敗\n' + err)
     }
-  }
+  };
 
   return (
     <Container className='login'>
@@ -64,7 +64,7 @@ const SignInPage = () => {
         </Col>
       </Row>
     </Container>
-  )
-}
+  );
+};
 
-export default SignInPage
+export default SignInPage;

@@ -1,30 +1,30 @@
-import React, { useState } from 'react'
-import {Container, Row, Col, Form, Button} from 'react-bootstrap'
-import axios from 'axios'
+import React, { useState } from 'react';
+import {Container, Row, Col, Form, Button} from 'react-bootstrap';
+import axios from 'axios';
 
 const SignUpPage = (props) => {
-  const [params, setParams] = useState({})
+  const [params, setParams] = useState({});
 
   const handleChange = e => {
-    setParams({ ...params, [e.target.name]: e.target.value })
-  }
+    setParams({ ...params, [e.target.name]: e.target.value });
+  };
 
   const handleKeyPress = e => {
-    const ENTER = 13
+    const ENTER = 13;
     if (e.keyCode === ENTER) {
-      submit()
+      submit();
     }
   };
 
   const submit = async () => {
-    const uri = '/api/sign-up'
+    const uri = '/api/sign-up';
     try {
-      const res = await axios.post(uri, params)
-      alert( 'User is registered.\n' + res.data.email)
+      const res = await axios.post(uri, params);
+      alert( 'User is registered.\n' + res.data.email);
     } catch(e) {
-      alert(e)
+      alert(e);
     }
-  }
+  };
 
   return (
     <Container className='sign-up'>
@@ -52,7 +52,7 @@ const SignUpPage = (props) => {
         </Col>
       </Row>
     </Container>
-  )
-}
+  );
+};
 
-export default SignUpPage
+export default SignUpPage;
