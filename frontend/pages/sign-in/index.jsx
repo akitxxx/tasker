@@ -3,11 +3,17 @@ import Router from 'next/router';
 import '../../styles/common.scss';
 import {Container, Row, Col, Form, Button} from 'react-bootstrap';
 import axios from 'axios'
+import { useEffect } from 'react';
 
 const SignInPage = () => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  useEffect(() => {
+    const token = localStorage.getItem('tasker_token');
+    token && Router.push('/task-board');
+  }, []);
 
   const handleEmailChange = e => {
     setEmail(e.target.value);
