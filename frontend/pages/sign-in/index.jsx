@@ -3,11 +3,22 @@ import Router from 'next/router';
 import '../../styles/common.scss';
 import {Container, Row, Col, Form, Button} from 'react-bootstrap';
 import axios from 'axios'
+import { useEffect } from 'react';
 
 const SignInPage = () => {
 
+  const [needSignIn, setNeedsSignIn] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  useEffect(() => {
+    const token = localStorage.getItem('tasker_token');
+    if(token) {
+      Router.push('/task-board');
+    } else {
+      setNeedsSignIn(true);
+    }
+  }, []);
 
   const handleEmailChange = e => {
     setEmail(e.target.value);
@@ -41,7 +52,7 @@ const SignInPage = () => {
     }
   };
 
-  return (
+  return needSignIn ? (
     <Container className='login'>
       <Row>
         <Col className='text-center my-3'>
@@ -64,7 +75,7 @@ const SignInPage = () => {
         </Col>
       </Row>
     </Container>
-  );
+  ) : <></>;
 };
 
 export default SignInPage;
