@@ -48,7 +48,14 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	renderResponse(w, user, http.StatusOK)
+	// create token
+	token, err := CreateToken(user)
+	if err != nil {
+		log.Println(err)
+		renderError(w, err, http.StatusInternalServerError)
+	}
+
+	renderResponse(w, token, http.StatusOK)
 }
 
 func GetUserList(w http.ResponseWriter, r *http.Request) {
