@@ -22,7 +22,7 @@ const SignUpPage = (props) => {
     const uri = '/api/sign-up';
     try {
       const res = await axios.post(uri, params);
-      alert( 'User is registered.\n' + res.data.email);
+      localStorage.setItem('tasker_token', res.data);
 
       Router.push('/task-board');
     } catch(e) {

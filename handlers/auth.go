@@ -66,7 +66,7 @@ func HandleAuth(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// create token
-	token, err := createToken(user)
+	token, err := CreateToken(user)
 	if err != nil {
 		renderError(w, err, http.StatusInternalServerError)
 	}
@@ -75,7 +75,7 @@ func HandleAuth(w http.ResponseWriter, r *http.Request) {
 }
 
 // Create JWT token
-func createToken(user *models.User) (string, error) {
+func CreateToken(user *models.User) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"id":    user.ID,
 		"email": user.Email,
