@@ -4,6 +4,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 import Lane from '../../components/lane';
 import axios from 'axios';
 import { useEffect } from 'react';
+import Layout from '../../components/layout';
 import '../../styles/task-board.scss';
 
 const TaskBoard = () => {
@@ -35,18 +36,15 @@ const TaskBoard = () => {
   };
 
   return (
-    <Container className='taskBoard'>
-      <Row>
-        <Col className="taskBoardHeader">
-          <h2>Task Board</h2>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <Lane taskList={taskList} setTaskList={setTaskList} fetchTaskList={fetchTaskList}/>
-        </Col>
-      </Row>
-    </Container>
+    <Layout>
+      <Container className='taskBoard'>
+        <Row>
+          <Col>
+            <Lane taskList={taskList} setTaskList={setTaskList} fetchTaskList={fetchTaskList}/>
+          </Col>
+        </Row>
+      </Container>
+    </Layout>
   );
 };
 
