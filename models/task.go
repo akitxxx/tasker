@@ -6,13 +6,14 @@ import (
 
 type Task struct {
 	ID        uint64    `json:"id"`
+	LaneId    uint64    `json:"lane_id"`
 	Title     string    `json:"title"`
 	Content   string    `json:"content"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
-func SelectTaskList() (*[]Task, error) {
+func SelectTaskList() ([]Task, error) {
 	var db, _ = DbConn()
 
 	sql := "select * from tasks;"
@@ -30,13 +31,13 @@ func SelectTaskList() (*[]Task, error) {
 
 	for rows.Next() {
 		t := Task{}
-		if err := rows.Scan(&t.ID, &t.Title, &t.Content, &t.CreatedAt, &t.UpdatedAt); err != nil {
+		if err := rows.Scan(&t.ID, &t.LaneId, &t.Title, &t.Content, &t.CreatedAt, &t.UpdatedAt); err != nil {
 			return nil, err
 		}
 		tasks = append(tasks, t)
 	}
 
-	return &tasks, nil
+	return tasks, nil
 }
 
 func FindTaskById(id uint64) (*Task, error) {

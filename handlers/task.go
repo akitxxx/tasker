@@ -17,14 +17,29 @@ func GetTaskList(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	lanes, err := models.SelectLaneList()
+	if err != nil {
+		log.Println(err)
+		renderError(w, err, http.StatusInternalServerError)
+	}
+
 	tasks, err := models.SelectTaskList()
 	if err != nil {
 		log.Println(err)
-		renderError(w, err, http.StatusBadRequest)
+		renderError(w, err, http.StatusInternalServerError)
 		return
 	}
 
-	renderResponse(w, tasks, http.StatusOK)
+	// marge lane and task
+	for i := 0; i < len(lanes); i++ {
+		for j := 0; j < len(tasks); j++ {
+			if lanes[i].ID == tasks[j].LaneId {
+				lanes[i].TaskList = append(lanes[i].TaskList, tasks[j])
+			}
+		}
+	}
+
+	renderResponse(w, lanes, http.StatusOK)
 }
 
 func CreateTask(w http.ResponseWriter, r *http.Request) {
