@@ -6,6 +6,7 @@ import (
 
 type Task struct {
 	ID        uint64    `json:"id"`
+	UserId    uint64    `json:"user_id"`
 	LaneId    uint64    `json:"lane_id"`
 	Title     string    `json:"title"`
 	Content   string    `json:"content"`
@@ -31,7 +32,7 @@ func SelectTaskList() ([]Task, error) {
 
 	for rows.Next() {
 		t := Task{}
-		if err := rows.Scan(&t.ID, &t.LaneId, &t.Title, &t.Content, &t.CreatedAt, &t.UpdatedAt); err != nil {
+		if err := rows.Scan(&t.ID, &t.UserId, &t.LaneId, &t.Title, &t.Content, &t.CreatedAt, &t.UpdatedAt); err != nil {
 			return nil, err
 		}
 		tasks = append(tasks, t)

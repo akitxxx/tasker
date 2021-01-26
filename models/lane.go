@@ -4,6 +4,7 @@ import "time"
 
 type Lane struct {
 	ID        uint64    `json:"id"`
+	UserId    uint64    `json:"user_id"`
 	Name      string    `json:"name"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
@@ -28,7 +29,7 @@ func SelectLaneList() ([]Lane, error) {
 
 	for rows.Next() {
 		l := Lane{}
-		if err := rows.Scan(&l.ID, &l.Name, &l.CreatedAt, &l.UpdatedAt); err != nil {
+		if err := rows.Scan(&l.ID, &l.UserId, &l.Name, &l.CreatedAt, &l.UpdatedAt); err != nil {
 			return nil, err
 		}
 		lanes = append(lanes, l)
