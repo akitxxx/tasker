@@ -56,24 +56,23 @@ func CreateTask(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// json parse
-	jsonBody := map[string]string{}
-	err = json.Unmarshal(body, &jsonBody)
+	newTask := models.Task{}
+	err = json.Unmarshal(body, &newTask)
 	if err != nil {
+		log.Println(err)
 		renderError(w, err, http.StatusInternalServerError)
 		return
 	}
-	title := jsonBody["title"]
-	content := jsonBody["content"]
 
 	// validate
-	if title == "" {
+	if newTask.Title == "" {
 		// title is required
 		renderError(w, err, http.StatusBadRequest)
 		return
 	}
 
 	// create task
-	task, err := models.CreateTask(title, content)
+	task, err := models.CreateTask(&newTask)
 	if err != nil {
 		log.Println(err)
 		renderError(w, err, http.StatusInternalServerError)

@@ -9,7 +9,7 @@ import '../../styles/task-board.scss';
 
 const TaskBoard = () => {
 
-  const [taskList, setTaskList] = useState([]);
+  const [laneList, setLaneList] = useState([]);
 
   useEffect(() => {
     // componentDidMount
@@ -28,7 +28,7 @@ const TaskBoard = () => {
             Authorization: `Bearer ${token}`,
           }
         });
-        res.data ? setTaskList(res.data) : setTaskList([]);
+        res.data ? setLaneList(res.data) : setLaneList([]);
       } catch(e) {
         alert(e);
         Router.push('/sign-in')
@@ -40,7 +40,10 @@ const TaskBoard = () => {
       <Container className='taskBoard'>
         <Row>
           <Col>
-            <Lane taskList={taskList} setTaskList={setTaskList} fetchTaskList={fetchTaskList}/>
+            {laneList && laneList.map((lane) => {
+              return <Lane key={lane.id} id={lane.id} userId={lane.user_id} name={lane.name} taskList={lane.task_list}
+                        fetchTaskList={fetchTaskList}/>
+            })}
           </Col>
         </Row>
       </Container>

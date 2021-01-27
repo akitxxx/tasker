@@ -7,6 +7,7 @@ import axios from 'axios';
 const Lane = (props) => {
 
   const [showInput, setShowInput] = useState(false);
+  const [taskList, setTaskList] = useState(props.taskList || []);
   const taskInput = useRef(null);
 
   useEffect(() => {
@@ -36,13 +37,15 @@ const Lane = (props) => {
     try {
       const res = await axios.post(uri,{
         title: taskInput.current.value,
+        user_id: props.userId,
+        lane_id: props.id,
       }, {
         headers: {
           Authorization: `Bearer ${token}`,
         }
       });
 
-      props.taskList && props.setTaskList([...props.taskList, res.data]);
+      taskList && setTaskList([...taskList, res.data]);
 
       setShowInput(false);
     } catch(e) {
@@ -56,7 +59,7 @@ const Lane = (props) => {
       <div className="laneHeader">
         <h5>Tasks</h5>
       </div>
-      {props.taskList && props.taskList.map((task) => {
+      {taskList && taskList.map((task) => {
          return <Card key={task.id} id={task.id} title={task.title} fetchTaskList={props.fetchTaskList}/>;
       })}
       <div className="laneFooter">

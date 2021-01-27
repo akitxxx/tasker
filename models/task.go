@@ -52,17 +52,17 @@ func FindTaskById(id uint64) (*Task, error) {
 	defer stmt.Close()
 
 	task := Task{}
-	if err := stmt.QueryRow(id).Scan(&task.ID, &task.Title, &task.Content, &task.CreatedAt, &task.UpdatedAt); err != nil {
+	if err := stmt.QueryRow(id).Scan(&task.ID, &task.UserId, &task.LaneId, &task.Title, &task.Content, &task.CreatedAt, &task.UpdatedAt); err != nil {
 		return nil, err
 	}
 
 	return &task, nil
 }
 
-func CreateTask(title string, content string) (*Task, error) {
+func CreateTask(task *Task) (*Task, error) {
 	var db, _ = DbConn()
 
-	sql := "insert into tasks(title, content) values(?, ?)"
+	sql := "insert into tasks(user_id, lane_id, title, content) values(?, ?, ?, ?)"
 	stmt, err := db.Prepare(sql)
 	if err != nil {
 		return nil, err
@@ -70,16 +70,16 @@ func CreateTask(title string, content string) (*Task, error) {
 	defer stmt.Close()
 
 	// insert
-	res, err := stmt.Exec(title, content)
+	res, err := stmt.Exec(task.UserId, task.LaneId, task.Title, task.Content)
 	if err != nil {
 		return nil, err
 	}
 
 	// get inserted task
 	id, _ := res.LastInsertId()
-	task, _ := FindTaskById((uint64(id)))
+	newTask, err := FindTaskById(uint64(id))
 
-	return task, nil
+	return newTask, nil
 }
 
 func UpdateTask(t *Task) (*Task, error) {
