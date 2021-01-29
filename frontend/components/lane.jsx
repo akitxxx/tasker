@@ -15,6 +15,10 @@ const Lane = (props) => {
     showInput && taskInput.current.focus();
   }, [showInput]);
 
+  useEffect(() => {
+    setTaskList(props.taskList);
+  }, [props.taskList]);
+
   const handleClickAddCard = (e) => {
     e.target.blur();
     setShowInput(true);
