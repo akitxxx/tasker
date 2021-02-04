@@ -32,4 +32,11 @@ func CreateLane(w http.ResponseWriter, r *http.Request) {
 	}
 
 	lane, err := models.CreateLane(&newLane)
+	if err != nil {
+		log.Println(err)
+		renderError(w, err, http.StatusInternalServerError)
+		return
+	}
+
+	renderResponse(w, lane, http.StatusOK)
 }
