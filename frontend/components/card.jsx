@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './card.module.scss';
 import {Button} from 'react-bootstrap';
 import axios from 'axios';

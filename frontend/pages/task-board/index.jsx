@@ -60,7 +60,7 @@ const TaskBoard = () => {
       <Container className='taskBoard'>
         <Row>
           {laneList && laneList.map((lane) => {
-            return <Lane key={lane.id} id={lane.id} userId={lane.user_id} name={lane.name} taskList={lane.task_list}
+            return <Lane key={lane.id} id={lane.id} userId={lane.user_id} name={lane.name} taskList={lane.task_list || []}
                       fetchTaskList={fetchTaskList}/>
           })}
           <Col md={2}><Button variant="default" className="btn-add-lane" onClick={handleClickBtnAddLane}>+ Add lane</Button></Col>
