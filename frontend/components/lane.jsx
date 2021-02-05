@@ -39,7 +39,7 @@ const Lane = (props) => {
     const token = localStorage.getItem('tasker_token');
 
     try {
-      const res = await axios.post(uri,{
+      const res = await axios.post(uri, {
         title: taskInput.current.value,
         user_id: props.userId,
         lane_id: props.id,
@@ -49,7 +49,7 @@ const Lane = (props) => {
         }
       });
 
-      taskList && setTaskList([...taskList, res.data]);
+      taskList ? setTaskList([...taskList, res.data]) : setTaskList([res.data]);
 
       setShowInput(false);
     } catch(e) {

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Router from 'next/router';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col, Button } from 'react-bootstrap';
 import Lane from '../../components/lane';
 import axios from 'axios';
 import { useEffect } from 'react';
@@ -20,7 +20,6 @@ const TaskBoard = () => {
       const uri = '/api/task';
       // get token from local storage
       const token = localStorage.getItem('tasker_token');
-
       try {
         // get task list from server
         const res = await axios.get(uri, {
@@ -35,16 +34,36 @@ const TaskBoard = () => {
       }
   };
 
+  const handleClickBtnAddLane = async (e) => {
+    e.preventDefault();
+
+    const uri = '/api/create-lane';
+    // get token from local storage
+    const token = localStorage.getItem('tasker_token');
+    try {
+      const res = await axios.post(uri, {
+
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      });
+      res.data && setLaneList([...laneList, res.data]);
+      fetchTaskList();
+    } catch(e) {
+      alert(e);
+    }
+  };
+
   return (
     <Layout>
       <Container className='taskBoard'>
         <Row>
-          <Col>
-            {laneList && laneList.map((lane) => {
-              return <Lane key={lane.id} id={lane.id} userId={lane.user_id} name={lane.name} taskList={lane.task_list}
-                        fetchTaskList={fetchTaskList}/>
-            })}
-          </Col>
+          {laneList && laneList.map((lane) => {
+            return <Lane key={lane.id} id={lane.id} userId={lane.user_id} name={lane.name} taskList={lane.task_list}
+                      fetchTaskList={fetchTaskList}/>
+          })}
+          <Col md={2}><Button variant="default" className="btn-add-lane" onClick={handleClickBtnAddLane}>+ Add lane</Button></Col>
         </Row>
       </Container>
     </Layout>

@@ -1,6 +1,9 @@
 package models
 
-import "time"
+import (
+	"log"
+	"time"
+)
 
 type Lane struct {
 	ID        uint64    `json:"id"`
@@ -17,12 +20,14 @@ func FindLaneById(id uint64) (*Lane, error) {
 	sql := "select * from lanes where id = ?;"
 	stmt, err := db.Prepare(sql)
 	if err != nil {
+		log.Println(err)
 		return nil, err
 	}
 	defer stmt.Close()
 
 	lane := Lane{}
-	if err := stmt.QueryRow(id).Scan(&lane.UserId, &lane.Name, &lane.CreatedAt, &lane.UpdatedAt); err != nil {
+	if err := stmt.QueryRow(id).Scan(&lane.ID, &lane.UserId, &lane.Name, &lane.CreatedAt, &lane.UpdatedAt); err != nil {
+		log.Println(err)
 		return nil, err
 	}
 
@@ -59,7 +64,7 @@ func SelectLaneList() ([]Lane, error) {
 func CreateLane(lane *Lane) (*Lane, error) {
 	var db, _ = DbConn()
 
-	sql := "insert into lanes(user_id, name, created_at, updated_at) values(?, ?, ?, ?)"
+	sql := "insert into lanes(user_id, name) values(?, ?)"
 	stmt, err := db.Prepare(sql)
 	if err != nil {
 		return nil, err
@@ -67,7 +72,7 @@ func CreateLane(lane *Lane) (*Lane, error) {
 	defer stmt.Close()
 
 	// insert
-	res, err := stmt.Exec(lane.UserId, lane.Name, lane.CreatedAt, lane.UpdatedAt)
+	res, err := stmt.Exec(lane.UserId, lane.Name)
 	if err != nil {
 		return nil, err
 	}
