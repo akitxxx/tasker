@@ -19,6 +19,7 @@ const Card = (props) => {
       });
     } catch(e) {
       alert(e);
+      return;
     }
 
     props.fetchTaskList();

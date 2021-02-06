@@ -58,11 +58,29 @@ const Lane = (props) => {
     }
   };
 
+  const handleClickRemove = async () => {
+    const uri = `/api/delete-lane/${props.id}`;
+    const token = localStorage.getItem('tasker_token');
+
+    try {
+      await axios.delete(uri, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      });
+    } catch(e) {
+      alert(e);
+      return;
+    }
+
+    props.fetchTaskList();
+  };
+
   return (
     <div className="lane col-md-4">
       <div className="laneHeader">
         <span>{props.name}</span>
-        <Button variant="white" size="sm" className="btnRemove float-right">x</Button>
+        <Button variant="white" size="sm" className="btnRemove float-right" onClick={handleClickRemove}>x</Button>
       </div>
       {taskList && taskList.map((task) => {
          return <Card key={task.id} id={task.id} title={task.title} fetchTaskList={props.fetchTaskList}/>;
