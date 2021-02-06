@@ -61,7 +61,8 @@ const Lane = (props) => {
   return (
     <div className="lane col-md-4">
       <div className="laneHeader">
-        <h5>Tasks</h5>
+        <span>{props.name}</span>
+        <Button variant="white" size="sm" className="btnRemove float-right">x</Button>
       </div>
       {taskList && taskList.map((task) => {
          return <Card key={task.id} id={task.id} title={task.title} fetchTaskList={props.fetchTaskList}/>;

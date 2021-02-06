@@ -35,3 +35,11 @@ $background: #ebecf0;
   height: 40px;
   margin-bottom: .5rem;
 }
+
+.btnRemove {
+  padding: .1em .6em;
+
+  &:hover {
+    background-color: darken($background, 10%);
+  }
+}
