@@ -87,7 +87,7 @@ func CreateLane(lane *Lane) (*Lane, error) {
 func DeleteLane(id int) error {
 	var db, _ = DbConn()
 
-	stmtDelete, err := db.Prepare("delete from lanes where id = ?")
+	stmtDelete, err := db.Prepare("delete lanes, tasks from lanes left join tasks on lanes.id = tasks.lane_id where lanes.id = ?")
 	if err != nil {
 		return err
 	}
