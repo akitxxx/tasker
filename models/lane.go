@@ -83,3 +83,20 @@ func CreateLane(lane *Lane) (*Lane, error) {
 
 	return newLane, nil
 }
+
+func DeleteLane(id int) error {
+	var db, _ = DbConn()
+
+	stmtDelete, err := db.Prepare("delete from lanes where id = ?")
+	if err != nil {
+		return err
+	}
+	defer stmtDelete.Close()
+
+	_, err = stmtDelete.Exec(id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
