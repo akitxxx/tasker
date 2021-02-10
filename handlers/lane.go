@@ -43,6 +43,37 @@ func CreateLane(w http.ResponseWriter, r *http.Request) {
 	renderResponse(w, lane, http.StatusOK)
 }
 
+func UpdateLane(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPut {
+		http.NotFound(w, r)
+		return
+	}
+
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		renderError(w, err, http.StatusInternalServerError)
+		return
+	}
+
+	laneInput := models.Lane{}
+	err = json.Unmarshal(body, &laneInput)
+	if err != nil {
+		renderError(w, err, http.StatusInternalServerError)
+		return
+	}
+
+	// TODO validation
+
+	// update
+	lane, err := models.UpdateLane(&laneInput)
+	if err != nil {
+		log.Println(err)
+		renderError(w, err, http.StatusInternalServerError)
+	}
+
+	renderResponse(w, lane, http.StatusOK)
+}
+
 func DeleteLane(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodDelete {
 		http.NotFound(w, r)

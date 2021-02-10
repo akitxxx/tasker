@@ -84,6 +84,28 @@ func CreateLane(lane *Lane) (*Lane, error) {
 	return newLane, nil
 }
 
+func UpdateLane(l *Lane) (*Lane, error) {
+	var db, _ = DbConn()
+
+	sql := "update lanes set name = ? where id = ?"
+	stmt, err := db.Prepare(sql)
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+
+	// update
+	_, err = stmt.Exec(l.Name, l.ID)
+	if err != nil {
+		return nil, err
+	}
+
+	// get updated task
+	lane, _ := FindLaneById(l.ID)
+
+	return lane, nil
+}
+
 func DeleteLane(id int) error {
 	var db, _ = DbConn()
 

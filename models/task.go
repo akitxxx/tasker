@@ -93,14 +93,13 @@ func UpdateTask(t *Task) (*Task, error) {
 	defer stmt.Close()
 
 	// update
-	res, err := stmt.Exec(t.Title, t.Content, t.ID)
+	_, err = stmt.Exec(t.Title, t.Content, t.ID)
 	if err != nil {
 		return nil, err
 	}
 
 	// get updated task
-	id, _ := res.RowsAffected()
-	task, _ := FindTaskById((uint64(id)))
+	task, _ := FindTaskById(t.ID)
 	return task, nil
 }
 

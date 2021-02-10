@@ -10,6 +10,24 @@ $background: #ebecf0;
   height: 2rem;
   padding: .5rem 0;
   margin-bottom: 1rem;
+
+  .laneName {
+    display: inline-block;
+    font-weight: bold;
+    width: 80%;
+    height: 2rem;
+    padding: .375rem .75rem;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .laneNameInputForm {
+    display: inline-block;
+    width: 80%;
+    height: 2rem;
+  }
 }
 
 .laneFooter {

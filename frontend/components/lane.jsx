@@ -6,14 +6,21 @@ import axios from 'axios';
 
 const Lane = (props) => {
 
-  const [showInput, setShowInput] = useState(false);
+  const [showInputTask, setShowInputTask] = useState(false);
+  const [showInputLaneName, setShowInputLaneName] = useState(false);
   const [taskList, setTaskList] = useState(props.taskList || []);
   const taskInput = useRef(null);
+  const laneNameInput = useRef(null);
 
   useEffect(() => {
-    // focus input form when it is shown
-    showInput && taskInput.current.focus();
-  }, [showInput]);
+    // focus new task input form when it is shown
+    showInputTask && taskInput.current.focus();
+  }, [showInputTask]);
+
+  useEffect(() => {
+    // focus lane name input form when it is shown
+    showInputLaneName && laneNameInput.current.focus();
+  }, [showInputLaneName]);
 
   useEffect(() => {
     setTaskList(props.taskList);
@@ -21,19 +28,22 @@ const Lane = (props) => {
 
   const handleClickAddCard = (e) => {
     e.target.blur();
-    setShowInput(true);
+    setShowInputTask(true);
   };
 
   const handleClickCancel = () => {
-    setShowInput(false);
+    setShowInputTask(false);
   };
 
-  const handleKeyDown = (e) => {
+  const handleKeyDownTaskInput = (e) => {
     if(e.keyCode === 13) {
       handleClickAdd();
     }
   };
 
+  /**
+   * Create task
+   */
   const handleClickAdd = async () => {
     const uri = '/api/create-task';
     const token = localStorage.getItem('tasker_token');
@@ -51,13 +61,16 @@ const Lane = (props) => {
 
       taskList ? setTaskList([...taskList, res.data]) : setTaskList([res.data]);
 
-      setShowInput(false);
+      setShowInputTask(false);
     } catch(e) {
       alert(e);
       return;
     }
   };
 
+  /**
+   * Delete lane
+   */
   const handleClickRemove = async () => {
     const uri = `/api/delete-lane/${props.id}`;
     const token = localStorage.getItem('tasker_token');
@@ -76,25 +89,66 @@ const Lane = (props) => {
     props.fetchTaskList();
   };
 
+  const handleClickLaneName = () => {
+    setShowInputLaneName(true);
+  };
+
+  const handleKeyDownLaneNameInput = async (e) => {
+    if(e.keyCode === 13) {
+      updateLane(e);
+    }
+  };
+
+  const handleBlurLaneNameInput = (e) => {
+    setShowInputLaneName(false);
+  };
+
+  const updateLane = async (e) => {
+    const uri = "/api/update-lane";
+    const token = localStorage.getItem('tasker_token');
+
+    try {
+      const res = await axios.put(uri, {
+        id: props.id,
+        name: e.target.value,
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      });
+
+      res.data && props.fetchTaskList();
+      setShowInputLaneName(false);
+    } catch(e) {
+      alert(e);
+      return;
+    }
+  };
+
   return (
     <div className="lane col-md-4">
       <div className="laneHeader">
-        <span>{props.name}</span>
+        {showInputLaneName &&
+          <Form.Control type="text" className="laneNameInputForm" defaultValue={props.name} ref={laneNameInput} onKeyDown={handleKeyDownLaneNameInput} onBlur={handleBlurLaneNameInput} />
+        }
+        {!showInputLaneName &&
+          <Form.Control className="laneName" plaintext readOnly defaultValue={props.name} onClick={handleClickLaneName} />
+        }
         <Button variant="white" size="sm" className="btnRemove float-right" onClick={handleClickRemove}>x</Button>
       </div>
       {taskList && taskList.map((task) => {
          return <Card key={task.id} id={task.id} title={task.title} fetchTaskList={props.fetchTaskList}/>;
       })}
       <div className="laneFooter">
-        {showInput &&
+        {showInputTask &&
         <Form className="taskInputForm" onSubmit={(e) => {e.preventDefault();}}>
-          <Form.Control type="text" ref={taskInput} onKeyDown={handleKeyDown} />
-            <Button className="mr-2" onClick={handleClickAdd}>Add</Button>
-            <Button variant="default" className="btnCancel" onClick={handleClickCancel}>Cancel</Button>
+          <Form.Control type="text" ref={taskInput} onKeyDown={handleKeyDownTaskInput} />
+          <Button className="mr-2" onClick={handleClickAdd}>Add</Button>
+          <Button variant="default" className="btnCancel" onClick={handleClickCancel}>Cancel</Button>
         </Form>
         }
 
-        {!showInput &&
+        {!showInputTask &&
         <Button variant="default" className="btnAddCard" onClick={handleClickAddCard}>+ Add task</Button>}
       </div>
     </div>
