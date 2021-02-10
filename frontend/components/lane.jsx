@@ -99,7 +99,7 @@ const Lane = (props) => {
     }
   };
 
-  const handleBlurLaneNameInput = (e) => {
+  const handleBlurLaneNameInput = () => {
     setShowInputLaneName(false);
   };
 
@@ -117,7 +117,8 @@ const Lane = (props) => {
         }
       });
 
-      res.data && props.fetchTaskList();
+      res.data && await props.fetchTaskList();
+
       setShowInputLaneName(false);
     } catch(e) {
       alert(e);
