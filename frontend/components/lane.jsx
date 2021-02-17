@@ -89,6 +89,9 @@ const Lane = (props) => {
     props.fetchTaskList();
   };
 
+  /**
+   * Show lane name input
+   */
   const handleClickLaneName = () => {
     setShowInputLaneName(true);
   };
@@ -99,10 +102,18 @@ const Lane = (props) => {
     }
   };
 
+  /**
+   * Hide lane name input
+   */
   const handleBlurLaneNameInput = () => {
     setShowInputLaneName(false);
   };
 
+
+  /**
+   * Update lane
+   * @param {*} e 
+   */
   const updateLane = async (e) => {
     const uri = "/api/update-lane";
     const token = localStorage.getItem('tasker_token');
