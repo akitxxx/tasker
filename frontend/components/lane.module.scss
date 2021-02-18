@@ -2,7 +2,7 @@ $background: #ebecf0;
 
 .lane {
   background-color: $background;
-  margin: 0 .5rem;
+  margin: 0 .5rem .5rem .5rem;
   border-radius: .25rem;
 }
 
@@ -10,6 +10,24 @@ $background: #ebecf0;
   height: 2rem;
   padding: .5rem 0;
   margin-bottom: 1rem;
+
+  .laneName {
+    display: inline-block;
+    font-weight: bold;
+    width: 80%;
+    height: 2rem;
+    padding: .375rem .75rem;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .laneNameInputForm {
+    display: inline-block;
+    width: 80%;
+    height: 2rem;
+  }
 }
 
 .laneFooter {
@@ -34,4 +52,12 @@ $background: #ebecf0;
 .taskInputForm input[type="text"] {
   height: 40px;
   margin-bottom: .5rem;
+}
+
+.btnRemove {
+  padding: .1em .6em;
+
+  &:hover {
+    background-color: darken($background, 10%);
+  }
 }

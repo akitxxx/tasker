@@ -1,5 +1,7 @@
-.taskBoardHeader {
-  padding: .5rem;
-  font-weight: bold;
-  font-size: 1.2rem;
+.btnAddLane {
+  background-color: #ebecf0;
+  margin-left: .5rem;
+  &:hover {
+    background-color: darken(#ebecf0, 10%);
+  }
 }
