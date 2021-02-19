@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Router from 'next/router';
 import { Container, Row, Col, Button, Form } from 'react-bootstrap';
 import ModalDialog from '../../components/modal';
+import TaskModal from '../../components/task-modal';
 import Lane from '../../components/lane';
 import axios from 'axios';
 import Layout from '../../components/layout';
@@ -11,6 +12,8 @@ const TaskBoard = () => {
 
   const [laneList, setLaneList] = useState([]);
   const [showAddLaneModal, setShowAddLaneModal] = useState(false);
+  const [showTaskModal, setShowTaskModal] = useState(false);
+  const [targetTask, setTargetTask] = useState(null);
   const [laneName, setLaneName] = useState(null);
   const laneNameInput = useRef(null);
 
@@ -70,7 +73,10 @@ const TaskBoard = () => {
         <Row>
           {laneList && laneList.map((lane) => {
             return <Lane key={lane.id} id={lane.id} userId={lane.user_id} name={lane.name} taskList={lane.task_list || []}
-                      fetchTaskList={fetchTaskList}/>
+                      fetchTaskList={fetchTaskList}
+                      setTargetTask={setTargetTask}
+                      setShowTaskModal={setShowTaskModal}
+                      />
           })}
           <div><Button variant="default" className="btnAddLane" onClick={handleClickBtnAddLane}>+ Add lane</Button></div>
         </Row>
@@ -90,6 +96,12 @@ const TaskBoard = () => {
           onChange={(e) => {setLaneName(e.target.value)}}
           onKeyDown={(e) => e.keyCode === 13 && createLane(laneName)}/>
       </ModalDialog>
+      <TaskModal
+        show={showTaskModal}
+        onHide={() => setShowTaskModal(false)}
+        task={targetTask}
+      >
+      </TaskModal>
     </Layout>
   );
 };

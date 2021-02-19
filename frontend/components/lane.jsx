@@ -149,7 +149,10 @@ const Lane = (props) => {
         <Button variant="white" size="sm" className="btnRemove float-right" onClick={handleClickRemove}>x</Button>
       </div>
       {taskList && taskList.map((task) => {
-         return <Card key={task.id} id={task.id} title={task.title} fetchTaskList={props.fetchTaskList}/>;
+         return <Card key={task.id} id={task.id} title={task.title} content={task.content} task={task}
+                  fetchTaskList={props.fetchTaskList}
+                  setShowTaskModal={props.setShowTaskModal}
+                  setTargetTask={props.setTargetTask}/>;
       })}
       <div className="laneFooter">
         {showInputTask &&
