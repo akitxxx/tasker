@@ -10,7 +10,7 @@ const TaskModal = (props) => {
       </Modal.Header>
 
       <Modal.Body>
-        <Form.Label>Example textarea</Form.Label>
+        <Form.Label>Task deital</Form.Label>
         <Form.Control as="textarea" rows={3} />
       </Modal.Body>
     </Modal>)
