@@ -83,7 +83,7 @@ func CreateTask(w http.ResponseWriter, r *http.Request) {
 }
 
 func UpdateTask(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPut {
+	if r.Method != http.MethodPatch {
 		http.NotFound(w, r)
 		return
 	}
@@ -104,15 +104,27 @@ func UpdateTask(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// validate
-	if taskInput.ID == 0 || taskInput.Title == "" {
-		// ID and title are required
+	if taskInput.ID == 0 {
+		// ID is required
 		// TODO render error message
 		renderError(w, err, http.StatusBadRequest)
 		return
 	}
 
+	targetTask, err := models.FindTaskById(taskInput.ID)
+	if err != nil {
+		renderError(w, err, http.StatusBadRequest)
+	}
+
+	if taskInput.Title != "" {
+		targetTask.Title = taskInput.Title
+	}
+	if taskInput.Content != "" {
+		targetTask.Content = taskInput.Content
+	}
+
 	// update task
-	task, err := models.UpdateTask(&taskInput)
+	task, err := models.UpdateTask(targetTask)
 
 	renderResponse(w, task, http.StatusOK)
 }
