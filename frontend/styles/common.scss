@@ -1,7 +1,13 @@
 $background: #fff;
 
-.btn-white{
+.btn-white {
   &:hover {
     background-color: darken($background, 10%);
+  }
+}
+
+.cursor-pointer {
+  &:hover {
+    cursor: pointer;
   }
 }
