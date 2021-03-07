@@ -41,6 +41,7 @@ const TaskBoard = () => {
   };
 
   const handleClickBtnAddLane = (e) => {
+    e.target.blur();
     e.preventDefault();
     setShowAddLaneModal(true);
   };

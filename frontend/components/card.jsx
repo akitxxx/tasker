@@ -9,6 +9,10 @@ const Card = (props) => {
     e.target.blur();
     e.stopPropagation();
 
+    if(!confirm('Are you sure you want to delete this task?')) {
+      return;
+    }
+
     const uri = `/api/delete-task/${props.id}`;
     const token = localStorage.getItem('tasker_token');
     try {

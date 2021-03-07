@@ -71,7 +71,13 @@ const Lane = (props) => {
   /**
    * Delete lane
    */
-  const handleClickRemove = async () => {
+  const handleClickRemove = async (e) => {
+    e.target.blur();
+
+    if(!confirm('Are you sure you want to delete this lane?')) {
+      return;
+    }
+
     const uri = `/api/delete-lane/${props.id}`;
     const token = localStorage.getItem('tasker_token');
 
