@@ -7,6 +7,7 @@ const Card = (props) => {
 
   const handleClickRemove = async (e) => {
     e.target.blur();
+    e.stopPropagation();
 
     const uri = `/api/delete-task/${props.id}`;
     const token = localStorage.getItem('tasker_token');
