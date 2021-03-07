@@ -101,6 +101,7 @@ const TaskBoard = () => {
         show={showTaskModal}
         onHide={() => setShowTaskModal(false)}
         task={targetTask}
+        fetchTaskList={fetchTaskList}
       >
       </TaskModal>
     </Layout>

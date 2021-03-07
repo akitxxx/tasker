@@ -68,6 +68,8 @@ const TaskModal = (props) => {
         alert(e);
         Router.push('/sign-in')
       }
+
+      props.fetchTaskList();
   };
 
   return props.task ?
