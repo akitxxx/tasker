@@ -1,5 +1,6 @@
 import Router from 'next/router';
 import { Button } from 'react-bootstrap';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 const header = {
   height: '3rem',
@@ -31,7 +32,7 @@ const Layout = (props) => {
     <div>
       <div style={header}>
         <div className="d-inline" style={title}>Tasker</div>
-        <Button className="float-right" onClick={handleClickSignOut}>Sign out</Button>
+        <Button className="float-right" onClick={handleClickSignOut}><ExitToAppIcon fontSize="small" /> Sign out</Button>
       </div>
       {props.children}
     </div>

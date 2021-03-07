@@ -2,6 +2,7 @@ import React from 'react';
 import './card.module.scss';
 import {Button} from 'react-bootstrap';
 import axios from 'axios';
+import ClearIcon from '@material-ui/icons/Clear';
 
 const Card = (props) => {
 
@@ -39,7 +40,7 @@ const Card = (props) => {
   return (
     <div className="card" className="card" onClick={handleClickCard}>
       <div className="title d-inline-block">{props.title}</div>
-      <Button variant="white" onClick={handleClickRemove}>x</Button>
+      <Button variant="white" onClick={handleClickRemove}><ClearIcon style={{ fontSize: 15 }} /></Button>
     </div>
   );
 };

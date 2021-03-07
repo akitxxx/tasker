@@ -3,6 +3,7 @@ import Card from './card';
 import './lane.module.scss';
 import { Form, Button } from 'react-bootstrap';
 import axios from 'axios';
+import ClearIcon from '@material-ui/icons/Clear';
 
 const Lane = (props) => {
 
@@ -152,7 +153,7 @@ const Lane = (props) => {
         {!showInputLaneName &&
           <Form.Control className="laneName" plaintext readOnly defaultValue={props.name} onClick={handleClickLaneName} />
         }
-        <Button variant="white" size="sm" className="btnRemove float-right" onClick={handleClickRemove}>x</Button>
+        <Button variant="white" size="sm" className="btnRemove float-right" onClick={handleClickRemove}><ClearIcon style={{ fontSize: 15 }} /></Button>
       </div>
       {taskList && taskList.map((task) => {
          return <Card key={task.id} id={task.id} title={task.title} content={task.content} task={task}
