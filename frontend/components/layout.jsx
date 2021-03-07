@@ -18,6 +18,11 @@ const Layout = (props) => {
 
   const handleClickSignOut = (e) => {
     e.target.blur();
+
+    if(!confirm('Are you sure you want to sign out?')) {
+      return;
+    }
+
     localStorage.removeItem('tasker_token');
     Router.push('/sign-in');
   };

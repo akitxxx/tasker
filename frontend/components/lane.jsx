@@ -71,7 +71,13 @@ const Lane = (props) => {
   /**
    * Delete lane
    */
-  const handleClickRemove = async () => {
+  const handleClickRemove = async (e) => {
+    e.target.blur();
+
+    if(!confirm('Are you sure you want to delete this lane?')) {
+      return;
+    }
+
     const uri = `/api/delete-lane/${props.id}`;
     const token = localStorage.getItem('tasker_token');
 
@@ -149,7 +155,10 @@ const Lane = (props) => {
         <Button variant="white" size="sm" className="btnRemove float-right" onClick={handleClickRemove}>x</Button>
       </div>
       {taskList && taskList.map((task) => {
-         return <Card key={task.id} id={task.id} title={task.title} fetchTaskList={props.fetchTaskList}/>;
+         return <Card key={task.id} id={task.id} title={task.title} content={task.content} task={task}
+                  fetchTaskList={props.fetchTaskList}
+                  setShowTaskModal={props.setShowTaskModal}
+                  setTargetTask={props.setTargetTask}/>;
       })}
       <div className="laneFooter">
         {showInputTask &&

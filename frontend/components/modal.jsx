@@ -14,8 +14,8 @@ const ModalDialog = (props) => {
       </Modal.Body>
 
       <Modal.Footer>
-        <Button variant="secondary" onClick={props.onCancel}>Cancel</Button>
-        <Button variant="primary" onClick={props.onExec}>{props.btnExecName}</Button>
+        {props.onCancel && <Button variant="secondary" onClick={props.onCancel}>Cancel</Button>}
+        {props.onExec && <Button variant="primary" onClick={props.onExec}>{props.btnExecName}</Button>}
       </Modal.Footer>
     </Modal>
   );

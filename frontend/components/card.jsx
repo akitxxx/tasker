@@ -7,10 +7,14 @@ const Card = (props) => {
 
   const handleClickRemove = async (e) => {
     e.target.blur();
+    e.stopPropagation();
+
+    if(!confirm('Are you sure you want to delete this task?')) {
+      return;
+    }
 
     const uri = `/api/delete-task/${props.id}`;
     const token = localStorage.getItem('tasker_token');
-
     try {
       await axios.delete(uri, {
         headers: {
@@ -25,8 +29,15 @@ const Card = (props) => {
     props.fetchTaskList();
   };
 
+  const handleClickCard = () => {
+    // show task detail modal
+    props.setShowTaskModal(true);
+    // set this task to modal
+    props.setTargetTask(props.task);
+  };
+
   return (
-    <div className="card" className="card">
+    <div className="card" className="card" onClick={handleClickCard}>
       <div className="title d-inline-block">{props.title}</div>
       <Button variant="white" onClick={handleClickRemove}>x</Button>
     </div>
