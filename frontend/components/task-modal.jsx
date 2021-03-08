@@ -30,7 +30,8 @@ const TaskModal = (props) => {
     }
   };
 
-  const handleBlurTitleInput = () => {
+  const handleBlurTitleInput = (e) => {
+      updateTask({title: e.target.value});
     setShowTitleInput(false);
   };
 
@@ -40,12 +41,13 @@ const TaskModal = (props) => {
 
   const handleKeyDownContentInput = async (e) => {
     if(e.keyCode === 13) {
-      await updateTask({content: e.target.value});
+      updateTask({content: e.target.value});
       setShowContentInput(false);
     }
   };
 
-  const handleBlurContentInput = () => {
+  const handleBlurContentInput = (e) => {
+    updateTask({content: e.target.value});
     setShowContentInput(false);
   };
 
@@ -73,7 +75,7 @@ const TaskModal = (props) => {
   };
 
   return props.task ?
-    (<Modal show={props.show} onHide={props.onHide}>
+    (<Modal show={props.show} onHide={props.onHide} animation={false}>
       <Modal.Header closeButton>
         <Modal.Title>
           {showTitleInput ?
