@@ -4,6 +4,7 @@ import './lane.module.scss';
 import { Form, Button } from 'react-bootstrap';
 import axios from 'axios';
 import ClearIcon from '@material-ui/icons/Clear';
+import { Droppable } from 'react-beautiful-dnd';
 
 const Lane = (props) => {
 
@@ -145,35 +146,44 @@ const Lane = (props) => {
   };
 
   return (
-    <div className="lane col-md-4">
-      <div className="laneHeader">
-        {showInputLaneName &&
-          <Form.Control type="text" className="laneNameInputForm" defaultValue={props.name} ref={laneNameInput} onKeyDown={handleKeyDownLaneNameInput} onBlur={handleBlurLaneNameInput} />
-        }
-        {!showInputLaneName &&
-          <Form.Control className="laneName" plaintext readOnly defaultValue={props.name} onClick={handleClickLaneName} />
-        }
-        <Button variant="white" size="sm" className="btnRemove float-right" onClick={handleClickRemove}><ClearIcon style={{ fontSize: 15 }} /></Button>
-      </div>
-      {taskList && taskList.map((task) => {
-         return <Card key={task.id} id={task.id} title={task.title} content={task.content} task={task}
-                  fetchTaskList={props.fetchTaskList}
-                  setShowTaskModal={props.setShowTaskModal}
-                  setTargetTask={props.setTargetTask}/>;
-      })}
-      <div className="laneFooter">
-        {showInputTask &&
-        <Form className="taskInputForm" onSubmit={(e) => {e.preventDefault();}}>
-          <Form.Control type="text" ref={taskInput} onKeyDown={handleKeyDownTaskInput} />
-          <Button className="mr-2" onClick={handleClickAdd}>Add</Button>
-          <Button variant="default" className="btnCancel" onClick={handleClickCancel}>Cancel</Button>
-        </Form>
-        }
+    <Droppable droppableId={props.id.toString()}>
+      {(provided) => (
+        <div
+          ref={provided.innerRef}
+          {...provided.droppableProps}
+          className="lane col-md-4"
+        >
+          <div className="laneHeader">
+            {showInputLaneName &&
+              <Form.Control type="text" className="laneNameInputForm" defaultValue={props.name} ref={laneNameInput} onKeyDown={handleKeyDownLaneNameInput} onBlur={handleBlurLaneNameInput} />
+            }
+            {!showInputLaneName &&
+              <Form.Control className="laneName" plaintext readOnly defaultValue={props.name} onClick={handleClickLaneName} />
+            }
+            <Button variant="white" size="sm" className="btnRemove float-right" onClick={handleClickRemove}><ClearIcon style={{ fontSize: 15 }} /></Button>
+          </div>
+          {taskList && taskList.map((task) => {
+            return <Card key={task.id} id={task.id} title={task.title} content={task.content} task={task}
+                      fetchTaskList={props.fetchTaskList}
+                      setShowTaskModal={props.setShowTaskModal}
+                      setTargetTask={props.setTargetTask}/>;
+          })}
+          <div className="laneFooter">
+            {showInputTask &&
+            <Form className="taskInputForm" onSubmit={(e) => {e.preventDefault();}}>
+              <Form.Control type="text" ref={taskInput} onKeyDown={handleKeyDownTaskInput} />
+              <Button className="mr-2" onClick={handleClickAdd}>Add</Button>
+              <Button variant="default" className="btnCancel" onClick={handleClickCancel}>Cancel</Button>
+            </Form>
+            }
 
-        {!showInputTask &&
-        <Button variant="default" className="btnAddCard" onClick={handleClickAddCard}>+ Add task</Button>}
-      </div>
-    </div>
+            {!showInputTask &&
+            <Button variant="default" className="btnAddCard" onClick={handleClickAddCard}>+ Add task</Button>}
+          </div>
+          {provided.placeholder}
+        </div>
+      )}
+    </Droppable>
   );
 };
 

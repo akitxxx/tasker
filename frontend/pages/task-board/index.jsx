@@ -6,6 +6,7 @@ import TaskModal from '../../components/task-modal';
 import Lane from '../../components/lane';
 import axios from 'axios';
 import Layout from '../../components/layout';
+import { DragDropContext } from 'react-beautiful-dnd';
 import '../../styles/task-board.scss';
 
 const TaskBoard = () => {
@@ -71,16 +72,19 @@ const TaskBoard = () => {
   return (
     <Layout>
       <Container className='taskBoard'>
-        <Row>
-          {laneList && laneList.map((lane) => {
-            return <Lane key={lane.id} id={lane.id} userId={lane.user_id} name={lane.name} taskList={lane.task_list || []}
+        <DragDropContext>
+          <Row>
+            {laneList && laneList.map((lane) => {
+              return <Lane
+                      key={lane.id} id={lane.id} userId={lane.user_id} name={lane.name} taskList={lane.task_list || []}
                       fetchTaskList={fetchTaskList}
                       setTargetTask={setTargetTask}
                       setShowTaskModal={setShowTaskModal}
-                      />
-          })}
-          <div><Button variant="default" className="btnAddLane" onClick={handleClickBtnAddLane}>+ Add lane</Button></div>
-        </Row>
+                     />
+            })}
+            <div><Button variant="default" className="btnAddLane" onClick={handleClickBtnAddLane}>+ Add lane</Button></div>
+          </Row>
+        </DragDropContext>
       </Container>
       <ModalDialog
         title="Add lane"
