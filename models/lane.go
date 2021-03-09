@@ -9,6 +9,7 @@ type Lane struct {
 	ID        uint64    `json:"id"`
 	UserId    uint64    `json:"user_id"`
 	Name      string    `json:"name"`
+	IndexNum  uint64    `json:"index_num"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 	TaskList  []Task    `json:"task_list"`
@@ -26,7 +27,7 @@ func FindLaneById(id uint64) (*Lane, error) {
 	defer stmt.Close()
 
 	lane := Lane{}
-	if err := stmt.QueryRow(id).Scan(&lane.ID, &lane.UserId, &lane.Name, &lane.CreatedAt, &lane.UpdatedAt); err != nil {
+	if err := stmt.QueryRow(id).Scan(&lane.ID, &lane.UserId, &lane.Name, &lane.IndexNum, &lane.CreatedAt, &lane.UpdatedAt); err != nil {
 		log.Println(err)
 		return nil, err
 	}
@@ -52,7 +53,7 @@ func SelectLaneList() ([]Lane, error) {
 
 	for rows.Next() {
 		l := Lane{}
-		if err := rows.Scan(&l.ID, &l.UserId, &l.Name, &l.CreatedAt, &l.UpdatedAt); err != nil {
+		if err := rows.Scan(&l.ID, &l.UserId, &l.Name, &l.IndexNum, &l.CreatedAt, &l.UpdatedAt); err != nil {
 			return nil, err
 		}
 		lanes = append(lanes, l)
@@ -64,15 +65,21 @@ func SelectLaneList() ([]Lane, error) {
 func CreateLane(lane *Lane) (*Lane, error) {
 	var db, _ = DbConn()
 
-	sql := "insert into lanes(user_id, name) values(?, ?)"
+	sql := "insert into lanes(user_id, name, index_num) values(?, ?, ?)"
 	stmt, err := db.Prepare(sql)
 	if err != nil {
 		return nil, err
 	}
 	defer stmt.Close()
 
+	// get last index_num
+	lastIndexNum, err := getLasIndexNum()
+	if err != nil {
+		return nil, err
+	}
+
 	// insert
-	res, err := stmt.Exec(lane.UserId, lane.Name)
+	res, err := stmt.Exec(lane.UserId, lane.Name, lastIndexNum+1)
 	if err != nil {
 		return nil, err
 	}
@@ -87,7 +94,7 @@ func CreateLane(lane *Lane) (*Lane, error) {
 func UpdateLane(l *Lane) (*Lane, error) {
 	var db, _ = DbConn()
 
-	sql := "update lanes set name = ? where id = ?"
+	sql := "update lanes set name = ?, index_num = ? where id = ?"
 	stmt, err := db.Prepare(sql)
 	if err != nil {
 		return nil, err
@@ -95,7 +102,7 @@ func UpdateLane(l *Lane) (*Lane, error) {
 	defer stmt.Close()
 
 	// update
-	_, err = stmt.Exec(l.Name, l.ID)
+	_, err = stmt.Exec(l.Name, l.IndexNum, l.ID)
 	if err != nil {
 		return nil, err
 	}
@@ -121,4 +128,15 @@ func DeleteLane(id int) error {
 	}
 
 	return nil
+}
+
+func getLasIndexNum() (uint64, error) {
+	var db, _ = DbConn()
+
+	lane := Lane{}
+	if err := db.QueryRow("select index_num from lanes order by index_num desc limit 1").Scan(&lane.IndexNum); err != nil {
+		return 0, err
+	}
+
+	return lane.IndexNum, nil
 }
