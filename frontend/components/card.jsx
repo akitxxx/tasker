@@ -15,7 +15,7 @@ const Card = (props) => {
       return;
     }
 
-    const uri = `/api/delete-task/${props.id}`;
+    const uri = `/api/delete-task/${props.task.id}`;
     const token = localStorage.getItem('tasker_token');
     try {
       await axios.delete(uri, {
@@ -39,7 +39,7 @@ const Card = (props) => {
   };
 
   return (
-    <Draggable draggableId={props.id.toString()} index={props.id}>
+    <Draggable draggableId={props.task.id.toString()} index={props.task.index_num}>
       {(provided) => (
         <div
           ref={provided.innerRef}
@@ -47,7 +47,7 @@ const Card = (props) => {
           {...provided.dragHandleProps}
           className="card" className="card" onClick={handleClickCard}
         >
-          <div className="title d-inline-block">{props.title}</div>
+          <div className="title d-inline-block">{props.task.title}</div>
           <Button variant="white" onClick={handleClickRemove}><ClearIcon style={{ fontSize: 15 }} /></Button>
         </div>
       )}

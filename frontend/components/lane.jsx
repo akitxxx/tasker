@@ -163,10 +163,13 @@ const Lane = (props) => {
             <Button variant="white" size="sm" className="btnRemove float-right" onClick={handleClickRemove}><ClearIcon style={{ fontSize: 15 }} /></Button>
           </div>
           {taskList && taskList.map((task) => {
-            return <Card key={task.id} id={task.id} title={task.title} content={task.content} task={task}
+            return <Card
+                      key={task.id}
+                      task={task} 
                       fetchTaskList={props.fetchTaskList}
                       setShowTaskModal={props.setShowTaskModal}
-                      setTargetTask={props.setTargetTask}/>;
+                      setTargetTask={props.setTargetTask}
+                   />;
           })}
           <div className="laneFooter">
             {showInputTask &&
