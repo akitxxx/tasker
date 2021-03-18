@@ -151,3 +151,62 @@ func DeleteTask(w http.ResponseWriter, r *http.Request) {
 
 	renderResponse(w, nil, http.StatusOK)
 }
+
+func UpdateIndex(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPatch {
+		http.NotFound(w, r)
+		return
+	}
+
+	// get request body
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		renderError(w, err, http.StatusBadRequest)
+	}
+
+	type TaskIndexData struct {
+		TaskId     uint64 `json:"task_id"`
+		SrcLaneId  uint64 `json:"src_lane_id"`
+		SrcIndex   uint64 `json:"src_index"`
+		DestLaneId uint64 `json:"dest_lane_id"`
+		DestIndex  uint64 `json:"dest_index"`
+	}
+
+	indexDataInput := TaskIndexData{}
+	if err = json.Unmarshal(body, &indexDataInput); err != nil {
+		renderError(w, err, http.StatusInternalServerError)
+		return
+	}
+
+	task, err := models.FindTaskById(indexDataInput.TaskId)
+	if err != nil {
+		renderError(w, err, http.StatusInternalServerError)
+	}
+
+	// Update tasks in destination lane
+	destTaskList, err := models.SelectTaskListAfterTargetIndex(indexDataInput.DestLaneId, indexDataInput.DestIndex)
+	if err != nil {
+		renderError(w, err, http.StatusInternalServerError)
+		return
+	}
+	for _, t := range destTaskList {
+		t.IndexNum++
+		models.UpdateTask(&t)
+	}
+
+	// Update task index
+	task.LaneId = indexDataInput.DestLaneId
+	task.IndexNum = indexDataInput.DestIndex
+	models.UpdateTask(task)
+
+	// Update tasks in source lane
+	srcTaskList, err := models.SelectTaskListAfterTargetIndex(indexDataInput.SrcLaneId, indexDataInput.SrcIndex)
+	if err != nil {
+		renderError(w, err, http.StatusInternalServerError)
+		return
+	}
+	for _, t := range srcTaskList {
+		t.IndexNum--
+		models.UpdateTask(&t)
+	}
+}

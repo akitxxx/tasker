@@ -72,14 +72,14 @@ func CreateLane(lane *Lane) (*Lane, error) {
 	}
 	defer stmt.Close()
 
-	// get last index_num
-	lastIndexNum, err := getLasIndexNum()
+	// get current index_num
+	currentIndexNum, err := getLastLaneIndexNum()
 	if err != nil {
 		return nil, err
 	}
 
 	// insert
-	res, err := stmt.Exec(lane.UserId, lane.Name, lastIndexNum+1)
+	res, err := stmt.Exec(lane.UserId, lane.Name, currentIndexNum)
 	if err != nil {
 		return nil, err
 	}
@@ -130,7 +130,21 @@ func DeleteLane(id int) error {
 	return nil
 }
 
-func getLasIndexNum() (uint64, error) {
+func getCurrentLaneIndexNum() (uint64, error) {
+	lastIndexNum, err := getLastLaneIndexNum()
+	if err != nil {
+		return 0, err
+	}
+
+	if lastIndexNum == 0 {
+		// return 0 if lane doesn't exist
+		return lastIndexNum, nil
+	}
+	// return last index + 1 if lane exist
+	return lastIndexNum + 1, nil
+}
+
+func getLastLaneIndexNum() (uint64, error) {
 	var db, _ = DbConn()
 
 	lane := Lane{}

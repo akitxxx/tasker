@@ -19,6 +19,7 @@ func main() {
 	mux.HandleFunc("/task", handlers.JwtMiddleware(handlers.GetTaskList))
 	mux.HandleFunc("/create-task", handlers.JwtMiddleware(handlers.CreateTask))
 	mux.HandleFunc("/update-task", handlers.JwtMiddleware(handlers.UpdateTask))
+	mux.HandleFunc("/update-index", handlers.JwtMiddleware(handlers.UpdateIndex))
 	mux.HandleFunc("/delete-task/", handlers.JwtMiddleware(handlers.DeleteTask))
 	mux.HandleFunc("/create-lane", handlers.JwtMiddleware(handlers.CreateLane))
 	mux.HandleFunc("/update-lane", handlers.JwtMiddleware(handlers.UpdateLane))

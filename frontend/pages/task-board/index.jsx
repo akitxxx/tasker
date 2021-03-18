@@ -69,10 +69,44 @@ const TaskBoard = () => {
     setShowAddLaneModal(false);
   };
 
+  const onDragEnd = (result) => {
+    if(!result.destination) return;
+
+    if(result.destination.index === result.source.index) return;
+
+    reorder(Number(result.draggableId), Number(result.source.droppableId),
+      Number(result.source.index), Number(result.destination.droppableId),
+      Number(result.destination.index));
+  };
+
+  const reorder = async (taskId, srcLaneId, srcIndex, destLaneId, destIndex) => {
+      const uri = '/api/update-index';
+      // get token from local storage
+      const token = localStorage.getItem('tasker_token');
+      try {
+        // get task list from server
+        await axios.patch(uri, {
+          task_id: taskId,
+          src_lane_id: srcLaneId,
+          src_index: srcIndex,
+          dest_lane_id: destLaneId,
+          dest_index: destIndex,    
+        }, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        });
+      } catch(e) {
+        alert(e);
+      }
+
+      fetchTaskList();
+  };
+
   return (
     <Layout>
       <Container className='taskBoard'>
-        <DragDropContext>
+        <DragDropContext onDragEnd={onDragEnd}>
           <Row>
             {laneList && laneList.map((lane) => {
               return <Lane
