@@ -6,6 +6,7 @@ import TaskModal from '../../components/task-modal';
 import Lane from '../../components/lane';
 import axios from 'axios';
 import Layout from '../../components/layout';
+import { DragDropContext } from 'react-beautiful-dnd';
 import '../../styles/task-board.scss';
 
 const TaskBoard = () => {
@@ -68,19 +69,56 @@ const TaskBoard = () => {
     setShowAddLaneModal(false);
   };
 
+  const onDragEnd = (result) => {
+    if(!result.destination) return;
+
+    if(result.destination.index === result.source.index) return;
+
+    reorder(Number(result.draggableId), Number(result.source.droppableId),
+      Number(result.source.index), Number(result.destination.droppableId),
+      Number(result.destination.index));
+  };
+
+  const reorder = async (taskId, srcLaneId, srcIndex, destLaneId, destIndex) => {
+      const uri = '/api/update-index';
+      // get token from local storage
+      const token = localStorage.getItem('tasker_token');
+      try {
+        // get task list from server
+        await axios.patch(uri, {
+          task_id: taskId,
+          src_lane_id: srcLaneId,
+          src_index: srcIndex,
+          dest_lane_id: destLaneId,
+          dest_index: destIndex,    
+        }, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        });
+      } catch(e) {
+        alert(e);
+      }
+
+      fetchTaskList();
+  };
+
   return (
     <Layout>
       <Container className='taskBoard'>
-        <Row>
-          {laneList && laneList.map((lane) => {
-            return <Lane key={lane.id} id={lane.id} userId={lane.user_id} name={lane.name} taskList={lane.task_list || []}
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Row>
+            {laneList && laneList.map((lane) => {
+              return <Lane
+                      key={lane.id} id={lane.id} userId={lane.user_id} name={lane.name} taskList={lane.task_list || []}
                       fetchTaskList={fetchTaskList}
                       setTargetTask={setTargetTask}
                       setShowTaskModal={setShowTaskModal}
-                      />
-          })}
-          <div><Button variant="default" className="btnAddLane" onClick={handleClickBtnAddLane}>+ Add lane</Button></div>
-        </Row>
+                     />
+            })}
+            <div><Button variant="default" className="btnAddLane" onClick={handleClickBtnAddLane}>+ Add lane</Button></div>
+          </Row>
+        </DragDropContext>
       </Container>
       <ModalDialog
         title="Add lane"

@@ -3,6 +3,7 @@ import './card.module.scss';
 import {Button} from 'react-bootstrap';
 import axios from 'axios';
 import ClearIcon from '@material-ui/icons/Clear';
+import { Draggable } from 'react-beautiful-dnd';
 
 const Card = (props) => {
 
@@ -14,7 +15,7 @@ const Card = (props) => {
       return;
     }
 
-    const uri = `/api/delete-task/${props.id}`;
+    const uri = `/api/delete-task/${props.task.id}`;
     const token = localStorage.getItem('tasker_token');
     try {
       await axios.delete(uri, {
@@ -38,10 +39,19 @@ const Card = (props) => {
   };
 
   return (
-    <div className="card" className="card" onClick={handleClickCard}>
-      <div className="title d-inline-block">{props.title}</div>
-      <Button variant="white" onClick={handleClickRemove}><ClearIcon style={{ fontSize: 15 }} /></Button>
-    </div>
+    <Draggable draggableId={props.task.id.toString()} index={props.task.index_num}>
+      {(provided) => (
+        <div
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+          className="card" className="card" onClick={handleClickCard}
+        >
+          <div className="title d-inline-block">{props.task.title}</div>
+          <Button variant="white" onClick={handleClickRemove}><ClearIcon style={{ fontSize: 15 }} /></Button>
+        </div>
+      )}
+    </Draggable>
   );
 };
 
